@@ -1337,6 +1337,37 @@
     text-align: right;
   }
 
+
+  .delete-take-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted2);
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+
+  .delete-take-btn:hover { border-color: #ff5555; color: #ff5555; }
+
+  .take-entry-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 10px;
+  }
+
+  .review-feed-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 8px;
+  }
+
 </style>
 </head>
 <body>
@@ -1851,6 +1882,9 @@
               </div>
               ${t.draft_comp ? `<div class="take-comp">Comp: ${t.draft_comp}</div>` : ''}
               <div class="take-text">${t.review}</div>
+              <div class="take-entry-footer">
+                <button class="delete-take-btn" onclick="deleteTake('${selectedPlayer.id}', event)" data-id="${t.id}">Delete</button>
+              </div>
             </div>
           `).join('')}
         </div>
@@ -1924,8 +1958,9 @@
     }
   }
 
-  function showToast() {
+  function showToast(msg) {
     const t = document.getElementById('toast');
+    t.textContent = msg || 'Review saved';
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
   }
@@ -2039,9 +2074,10 @@
           </div>
           ${r.draft_comp ? `<div class="review-feed-comp">Comp: ${r.draft_comp}</div>` : ''}
           <div class="review-feed-text">${r.review}</div>
-        </div>
-        <div>
-          <div class="review-feed-date">${formatDate(r.created_at)}</div>
+          <div class="review-feed-footer">
+            <div class="review-feed-date" style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);letter-spacing:1px;">${formatDate(r.created_at)}</div>
+            <button class="delete-take-btn" onclick="deleteTakeFromFeed('${r.id}', event)">Delete</button>
+          </div>
         </div>
       </div>
     `).join('');
@@ -2478,6 +2514,33 @@
     closeAddPlayerModal();
     await loadRankingEntries(currentRankingId);
     showToast();
+  }
+
+
+  // ── DELETE TAKES ──
+  async function deleteTake(playerId, e) {
+    e.stopPropagation();
+    const btn = e.currentTarget;
+    const reviewId = btn.dataset.id;
+    if (!confirm('Delete this take? This cannot be undone.')) return;
+
+    const { error } = await sb.from('reviews').delete().eq('id', reviewId).eq('user_id', currentUser.id);
+    if (error) { alert('Error deleting: ' + error.message); return; }
+
+    showToast('Take deleted');
+    loadPreviousTakes(playerId);
+  }
+
+  async function deleteTakeFromFeed(reviewId, e) {
+    e.stopPropagation();
+    if (!confirm('Delete this take? This cannot be undone.')) return;
+
+    const { error } = await sb.from('reviews').delete().eq('id', reviewId).eq('user_id', currentUser.id);
+    if (error) { alert('Error deleting: ' + error.message); return; }
+
+    allMyReviews = allMyReviews.filter(r => r.id !== reviewId);
+    renderMyReviews();
+    showToast('Take deleted');
   }
 
   // ── INIT ──
