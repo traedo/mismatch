@@ -1724,6 +1724,7 @@
   <button class="auth-btn" id="authBtn" onclick="handleAuthBtn()">Sign In</button>
 </header>
 
+<div id="homePage">
 <div class="hero">
   <div class="hero-label">// NBA · Draft Prospects · Rankings</div>
   <h1>See what<br><em>others</em><br>miss.</h1>
@@ -1780,6 +1781,8 @@
     </div>
   </div>
 </div>
+
+</div><!-- end homePage -->
 
 <!-- TRENDING PAGE -->
 <div id="trendingPage" style="display:none;">
@@ -2309,7 +2312,7 @@
 
   // ── PAGE NAVIGATION ──
   function showPage(page) {
-    const homePage = document.querySelector('.hero');
+    const homePage = document.getElementById('homePage');
     const reviewsPage = document.getElementById('myReviewsPage');
     const rankingsPage = document.getElementById('rankingsPage');
     const trendingPage = document.getElementById('trendingPage');
