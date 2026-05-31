@@ -1,0 +1,2487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MISMATCH</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --surface2: #1a1a1a;
+    --border: #222222;
+    --accent: #e8ff47;
+    --accent2: #ff6b35;
+    --text: #f0f0f0;
+    --muted: #666666;
+    --muted2: #444444;
+    --prospect: #e8ff47;
+    --nba: #ff6b35;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    background: rgba(10,10,10,0.95);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 4px;
+    color: var(--accent);
+  }
+
+  nav { display: flex; gap: 32px; align-items: center; }
+
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    font-weight: 400;
+    transition: color 0.2s;
+    cursor: pointer;
+  }
+
+  nav a:hover, nav a.active { color: var(--text); }
+
+  .auth-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .auth-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .auth-btn.signed-in { border-color: var(--accent); color: var(--accent); }
+
+  /* AUTH MODAL */
+  .auth-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.9);
+    z-index: 800;
+    backdrop-filter: blur(6px);
+    align-items: center;
+    justify-content: center;
+  }
+
+  .auth-overlay.open { display: flex; }
+
+  .auth-modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    width: 90%;
+    max-width: 420px;
+    padding: 48px 40px;
+    position: relative;
+    animation: modalIn 0.2s ease;
+  }
+
+  .auth-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 36px;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  .auth-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 32px;
+    line-height: 1.5;
+  }
+
+  .auth-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .auth-tab {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 20px 10px 0;
+    cursor: pointer;
+    transition: color 0.15s;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+  }
+
+  .auth-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  .auth-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+
+  .auth-field label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .auth-field input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    padding: 12px 16px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .auth-field input:focus { border-color: var(--accent); }
+
+  .auth-submit {
+    width: 100%;
+    background: var(--accent);
+    border: none;
+    color: var(--bg);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 16px;
+    cursor: pointer;
+    margin-top: 8px;
+    font-weight: 500;
+    transition: opacity 0.15s;
+  }
+
+  .auth-submit:hover { opacity: 0.85; }
+  .auth-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .auth-msg {
+    margin-top: 12px;
+    font-size: 13px;
+    color: var(--muted);
+    text-align: center;
+    min-height: 20px;
+  }
+
+  .auth-msg.error { color: #ff5555; }
+  .auth-msg.success { color: var(--accent); }
+
+  .auth-close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+
+  .auth-close:hover { border-color: var(--text); color: var(--text); }
+
+  /* HERO */
+  .hero {
+    padding: 80px 40px 60px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 8vw, 88px);
+    line-height: 0.95;
+    letter-spacing: 2px;
+    margin-bottom: 40px;
+  }
+
+  .hero h1 em { font-style: normal; color: var(--accent); }
+
+  /* SEARCH */
+  .search-wrap { position: relative; margin-bottom: 16px; }
+
+  .search-input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 18px;
+    font-weight: 300;
+    padding: 20px 56px 20px 24px;
+    outline: none;
+    transition: border-color 0.2s;
+    letter-spacing: 0.5px;
+  }
+
+  .search-input::placeholder { color: var(--muted2); }
+  .search-input:focus { border-color: var(--accent); }
+
+  .search-icon {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    pointer-events: none;
+  }
+
+  /* FILTER PILLS */
+  .filters { display: flex; gap: 8px; margin-bottom: 48px; flex-wrap: wrap; }
+
+  .pill {
+    padding: 6px 16px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .pill:hover { border-color: var(--muted); color: var(--text); }
+  .pill.active-all { border-color: var(--text); color: var(--text); }
+  .pill.active-prospect { border-color: var(--prospect); color: var(--prospect); }
+  .pill.active-nba { border-color: var(--nba); color: var(--nba); }
+
+  /* SEARCH DROPDOWN */
+  .dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0; right: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    z-index: 200;
+    max-height: 320px;
+    overflow-y: auto;
+    display: none;
+  }
+
+  .dropdown.open { display: block; }
+
+  .dropdown-item {
+    padding: 14px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+
+  .dropdown-item:last-child { border-bottom: none; }
+  .dropdown-item:hover { background: var(--surface2); }
+  .dropdown-item .player-name { font-size: 15px; font-weight: 400; }
+  .dropdown-item .player-meta { display: flex; align-items: center; gap: 12px; }
+  .dropdown-item .team { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 1px; }
+
+  .type-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border: 1px solid;
+  }
+
+  .type-badge.prospect { color: var(--prospect); border-color: var(--prospect); }
+  .type-badge.nba { color: var(--nba); border-color: var(--nba); }
+
+  /* PLAYER GRID */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .section-label span { color: var(--accent); }
+
+  .player-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    margin-bottom: 80px;
+  }
+
+  .player-card {
+    background: var(--surface);
+    padding: 24px;
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .player-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--accent);
+    transition: height 0.2s;
+  }
+
+  .player-card.nba-card::before { background: var(--nba); }
+  .player-card:hover { background: var(--surface2); }
+  .player-card:hover::before { height: 100%; }
+
+  .card-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .card-type.prospect { color: var(--prospect); }
+  .card-type.nba { color: var(--nba); }
+
+  .card-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .card-team { font-size: 12px; color: var(--muted); letter-spacing: 0.5px; }
+
+  .card-arrow {
+    position: absolute;
+    bottom: 20px; right: 20px;
+    color: var(--muted2);
+    font-size: 18px;
+    transition: color 0.2s, transform 0.2s;
+  }
+
+  .player-card:hover .card-arrow { color: var(--accent); transform: translate(2px, -2px); }
+  .nba-card:hover .card-arrow { color: var(--nba); }
+
+  /* PLAYER MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 500;
+    backdrop-filter: blur(4px);
+  }
+
+  .modal-overlay.open { display: flex; align-items: center; justify-content: center; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    width: 90%;
+    max-width: 680px;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    animation: modalIn 0.2s ease;
+  }
+
+  @keyframes modalIn {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .modal-header {
+    padding: 32px 36px 24px;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+
+  .modal-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .modal-type.prospect { color: var(--prospect); }
+  .modal-type.nba { color: var(--nba); }
+
+  .modal-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 52px;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .modal-team { color: var(--muted); font-size: 14px; letter-spacing: 1px; }
+
+  .modal-close {
+    position: absolute;
+    top: 24px; right: 24px;
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    width: 36px; height: 36px;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+  }
+
+  .modal-close:hover { border-color: var(--text); color: var(--text); }
+  .modal-body { padding: 32px 36px; }
+
+  .modal-section-title {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  /* REVIEW FORM */
+  .review-form { display: flex; flex-direction: column; gap: 24px; }
+
+  .form-input {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    padding: 12px 16px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .form-input::placeholder { color: var(--muted2); }
+  .form-input:focus { border-color: var(--accent); }
+
+  .form-textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 16px;
+    resize: vertical;
+    min-height: 120px;
+    outline: none;
+    line-height: 1.6;
+    transition: border-color 0.2s;
+  }
+
+  .form-textarea::placeholder { color: var(--muted2); }
+  .form-textarea:focus { border-color: var(--accent); }
+
+  /* RATING */
+  .rating-input-wrap { display: flex; align-items: center; gap: 12px; }
+
+  .rating-number-input {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--accent);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 2px;
+    width: 90px;
+    padding: 8px 12px;
+    outline: none;
+    text-align: center;
+    transition: border-color 0.2s;
+  }
+
+  .rating-number-input:focus { border-color: var(--accent); }
+
+  .rating-hint {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    line-height: 1.6;
+  }
+
+  .submit-btn {
+    background: var(--accent);
+    border: none;
+    color: var(--bg);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 16px 32px;
+    cursor: pointer;
+    transition: opacity 0.15s;
+    align-self: flex-start;
+    font-weight: 500;
+  }
+
+  .submit-btn:hover { opacity: 0.85; }
+  .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  .login-prompt {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .login-prompt p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .login-prompt-btn {
+    background: none;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 18px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+
+  .login-prompt-btn:hover { background: var(--accent); color: var(--bg); }
+
+  /* PREVIOUS TAKES */
+  .takes-history { display: flex; flex-direction: column; gap: 16px; margin-top: 8px; }
+
+  .take-entry {
+    border: 1px solid var(--border);
+    padding: 16px 20px;
+    position: relative;
+  }
+
+  .take-entry-meta {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+
+  .take-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .take-version {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    text-transform: uppercase;
+    border: 1px solid var(--accent);
+    padding: 2px 8px;
+  }
+
+  .take-rating {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--accent);
+    letter-spacing: 1px;
+  }
+
+  .take-comp {
+    font-size: 12px;
+    color: var(--nba);
+    font-style: italic;
+    margin-bottom: 6px;
+  }
+
+  .take-text { font-size: 13px; color: var(--text); line-height: 1.6; font-weight: 300; }
+
+  .divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 8px 0;
+  }
+
+  /* EMPTY / LOADING */
+  .empty-state { padding: 80px 40px; text-align: center; color: var(--muted); }
+  .empty-state .big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    letter-spacing: 4px;
+    color: var(--muted2);
+    display: block;
+    margin-bottom: 16px;
+  }
+
+  .loading {
+    padding: 60px 40px;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 3px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .loading::after {
+    content: '';
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: var(--accent);
+    margin-left: 12px;
+    animation: blink 0.8s infinite;
+  }
+
+  @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+  .toast {
+    position: fixed;
+    bottom: 32px; right: 32px;
+    background: var(--accent);
+    color: var(--bg);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 14px 24px;
+    z-index: 999;
+    transform: translateY(80px);
+    opacity: 0;
+    transition: all 0.3s ease;
+  }
+
+  .toast.show { transform: translateY(0); opacity: 1; }
+
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); }
+
+  @media (max-width: 600px) {
+    header { padding: 0 20px; }
+    .hero { padding: 48px 20px 40px; }
+    .modal { width: 100%; max-height: 100vh; }
+    .modal-header, .modal-body { padding: 24px 20px; }
+    .modal-name { font-size: 40px; }
+  }
+
+  /* MY REVIEWS PAGE */
+  .review-feed-item {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 24px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+  }
+
+  .review-feed-item:hover { background: var(--surface2); }
+  .review-feed-item:first-child { border-top: 1px solid var(--border); }
+
+  .review-feed-player {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    line-height: 1;
+  }
+
+  .review-feed-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+
+  .review-feed-team {
+    font-size: 12px;
+    color: var(--muted);
+    letter-spacing: 0.5px;
+  }
+
+  .review-feed-version {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 2px 8px;
+    text-transform: uppercase;
+  }
+
+  .review-feed-rating {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--accent);
+    letter-spacing: 1px;
+  }
+
+  .review-feed-comp {
+    font-size: 12px;
+    color: var(--nba);
+    font-style: italic;
+    margin-bottom: 6px;
+  }
+
+  .review-feed-text {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    font-weight: 300;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .review-feed-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    color: var(--muted2);
+    text-align: right;
+    white-space: nowrap;
+    margin-top: 4px;
+  }
+
+  .review-feed-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border: 1px solid;
+    align-self: start;
+  }
+
+  .review-feed-type.prospect { color: var(--prospect); border-color: var(--prospect); }
+  .review-feed-type.nba { color: var(--nba); border-color: var(--nba); }
+
+  .reviews-empty {
+    padding: 80px 40px;
+    text-align: center;
+    color: var(--muted);
+  }
+
+  .reviews-empty .big {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 56px;
+    letter-spacing: 4px;
+    color: var(--muted2);
+    display: block;
+    margin-bottom: 12px;
+  }
+
+
+  /* ── RANKINGS PAGE ── */
+  .rankings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    margin-bottom: 48px;
+  }
+
+  .ranking-card {
+    background: var(--surface);
+    padding: 24px;
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ranking-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 3px; height: 0;
+    background: var(--accent);
+    transition: height 0.2s;
+  }
+
+  .ranking-card:hover { background: var(--surface2); }
+  .ranking-card:hover::before { height: 100%; }
+
+  .ranking-card-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .ranking-card-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .ranking-card-arrow {
+    position: absolute;
+    bottom: 20px; right: 20px;
+    color: var(--muted2);
+    font-size: 18px;
+    transition: color 0.2s, transform 0.2s;
+  }
+
+  .ranking-card:hover .ranking-card-arrow { color: var(--accent); transform: translate(2px,-2px); }
+
+  .new-ranking-btn {
+    background: none;
+    border: 1px dashed var(--border);
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 20px 32px;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-bottom: 32px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .new-ranking-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* RANKING DETAIL VIEW */
+  .ranking-detail { display: none; }
+  .ranking-detail.open { display: block; }
+
+  .ranking-back {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 0;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.15s;
+  }
+
+  .ranking-back:hover { color: var(--accent); }
+
+  .ranking-detail-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+
+  .ranking-detail-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+
+  .ranking-add-btn {
+    background: none;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-bottom: 32px;
+  }
+
+  .ranking-add-btn:hover { background: var(--accent); color: var(--bg); }
+
+  /* DRAG AND DROP LIST */
+  .ranking-list { list-style: none; margin-bottom: 48px; }
+
+  .ranking-entry {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 20px;
+    display: grid;
+    grid-template-columns: 40px 1fr auto;
+    align-items: center;
+    gap: 16px;
+    cursor: grab;
+    transition: background 0.15s, opacity 0.15s;
+    user-select: none;
+  }
+
+  .ranking-entry:first-child { border-top: 1px solid var(--border); }
+  .ranking-entry:active { cursor: grabbing; }
+  .ranking-entry.dragging { opacity: 0.4; }
+  .ranking-entry.drag-over { background: var(--surface2); border-top: 2px solid var(--accent); }
+  .ranking-entry:hover { background: var(--surface2); }
+
+  .ranking-pos {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--muted2);
+    letter-spacing: 1px;
+    text-align: center;
+    line-height: 1;
+  }
+
+  .ranking-entry-info { min-width: 0; }
+
+  .ranking-entry-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin-bottom: 4px;
+  }
+
+  .ranking-entry-meta {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+
+  .ranking-entry-team { font-size: 11px; color: var(--muted); }
+
+  .ranking-entry-version {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 1px 6px;
+    text-transform: uppercase;
+  }
+
+  .ranking-entry-rating {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: var(--accent);
+  }
+
+  .ranking-entry-note {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .ranking-entry-actions { display: flex; gap: 8px; align-items: center; }
+
+  .entry-remove-btn {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted2);
+    width: 28px; height: 28px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+
+  .entry-remove-btn:hover { border-color: #ff5555; color: #ff5555; }
+
+  .drag-handle {
+    color: var(--muted2);
+    font-size: 14px;
+    cursor: grab;
+    padding: 4px;
+  }
+
+  /* ADD PLAYER TO RANKING MODAL */
+  .add-player-modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    width: 90%;
+    max-width: 560px;
+    max-height: 85vh;
+    overflow-y: auto;
+    position: relative;
+    animation: modalIn 0.2s ease;
+    padding: 32px;
+  }
+
+  .add-player-search {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    padding: 14px 18px;
+    outline: none;
+    margin-bottom: 4px;
+    transition: border-color 0.2s;
+  }
+
+  .add-player-search:focus { border-color: var(--accent); }
+
+  .add-player-results { margin-bottom: 20px; max-height: 200px; overflow-y: auto; }
+
+  .add-player-result {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    transition: background 0.1s;
+  }
+
+  .add-player-result:hover { background: var(--surface2); }
+  .add-player-result.selected-for-add { background: var(--surface2); border-left: 3px solid var(--accent); }
+
+  .add-player-result-name { font-size: 15px; font-weight: 400; }
+  .add-player-result-team { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
+
+  .add-note-field {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    padding: 12px 16px;
+    outline: none;
+    resize: vertical;
+    min-height: 80px;
+    line-height: 1.6;
+    transition: border-color 0.2s;
+    margin-bottom: 16px;
+  }
+
+  .add-note-field::placeholder { color: var(--muted2); }
+  .add-note-field:focus { border-color: var(--accent); }
+
+  .review-use-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 16px;
+    border: 1px solid var(--border);
+    cursor: pointer;
+    margin-bottom: 8px;
+    transition: all 0.15s;
+  }
+
+  .review-use-option:hover { border-color: var(--muted); }
+  .review-use-option.selected { border-color: var(--accent); background: rgba(232,255,71,0.04); }
+
+  .review-use-option input[type="radio"] { margin-top: 2px; accent-color: var(--accent); flex-shrink: 0; }
+
+  .review-use-label { font-size: 13px; line-height: 1.5; }
+  .review-use-label strong { display: block; font-size: 12px; font-family: 'DM Mono', monospace; letter-spacing: 1px; color: var(--accent); text-transform: uppercase; margin-bottom: 2px; }
+
+  /* NEW RANKING MODAL */
+  .new-ranking-modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    width: 90%;
+    max-width: 460px;
+    padding: 40px;
+    position: relative;
+    animation: modalIn 0.2s ease;
+  }
+
+
+  /* ── TRENDING PAGE ── */
+  .trending-section { margin-bottom: 56px; }
+
+  .trending-section-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 2px;
+    margin-bottom: 4px;
+  }
+
+  .trending-section-sub {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .trending-take {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 24px;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .trending-take:first-child { border-top: 1px solid var(--border); }
+  .trending-take:hover { background: var(--surface2); }
+
+  .trending-take-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 8px;
+  }
+
+  .trending-take-player {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+
+  .trending-take-right {
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .trending-take-rating {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    line-height: 1;
+  }
+
+  .trending-take-date {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--muted2);
+    letter-spacing: 1px;
+    margin-top: 2px;
+  }
+
+  .trending-take-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+
+  .trending-username {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--accent);
+  }
+
+  .trending-take-text {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.6;
+    font-weight: 300;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .trending-comp {
+    font-size: 12px;
+    color: var(--nba);
+    font-style: italic;
+    margin-bottom: 4px;
+  }
+
+  .most-reviewed-item {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .most-reviewed-item:first-child { border-top: 1px solid var(--border); }
+  .most-reviewed-item:hover { background: var(--surface2); }
+
+  .most-reviewed-rank {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    color: var(--muted2);
+    letter-spacing: 1px;
+    width: 48px;
+    flex-shrink: 0;
+  }
+
+  .most-reviewed-info { flex: 1; min-width: 0; }
+
+  .most-reviewed-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 1px;
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }
+
+  .most-reviewed-sub {
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+
+  .most-reviewed-count {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  .most-reviewed-count span {
+    display: block;
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-align: right;
+  }
+
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">MISMATCH</div>
+  <nav>
+    <a class="active" onclick="showPage('home')" id="nav-home">Review</a>
+    <a onclick="showPage('myreviews')" id="nav-myreviews">My Reviews</a>
+    <a onclick="showPage('rankings')" id="nav-rankings">Rankings</a>
+    <a onclick="showPage('trending')" id="nav-trending">Trending</a>
+  </nav>
+  <button class="auth-btn" id="authBtn" onclick="handleAuthBtn()">Sign In</button>
+</header>
+
+<div class="hero">
+  <div class="hero-label">// NBA · Draft Prospects · Rankings</div>
+  <h1>See what<br><em>others</em><br>miss.</h1>
+
+  <div class="search-wrap">
+    <input class="search-input" id="searchInput" type="text" placeholder="Search players, prospects..." autocomplete="off" />
+    <div class="search-icon">
+      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+    </div>
+    <div class="dropdown" id="dropdown"></div>
+  </div>
+
+  <div class="filters">
+    <button class="pill active-all" data-filter="all">All Players</button>
+    <button class="pill" data-filter="prospect">Prospects</button>
+    <button class="pill" data-filter="nba">NBA Players</button>
+  </div>
+
+  <div class="section-label">
+    <span id="gridLabel">ALL PLAYERS</span>
+    <span id="playerCount">—</span>
+  </div>
+
+  <div id="playerGrid" class="player-grid"></div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="auth-overlay" id="authOverlay">
+  <div class="auth-modal">
+    <button class="auth-close" onclick="closeAuth()">✕</button>
+    <div class="auth-title">MISMATCH</div>
+    <div class="auth-sub">Sign in to log reviews, track your takes, and build rankings.</div>
+    <div class="auth-tabs">
+      <button class="auth-tab active" onclick="switchAuthTab('signin')">Sign In</button>
+      <button class="auth-tab" onclick="switchAuthTab('signup')">Create Account</button>
+    </div>
+    <div id="authForm">
+      <div class="auth-field">
+        <label>Email</label>
+        <input type="email" id="authEmail" placeholder="your@email.com" />
+      </div>
+      <div class="auth-field">
+        <label>Password</label>
+        <input type="password" id="authPassword" placeholder="••••••••" />
+      </div>
+      <div class="auth-field" id="usernameField" style="display:none;">
+        <label>Username</label>
+        <input type="text" id="authUsername" placeholder="e.g. traeden" autocomplete="off" />
+      </div>
+      <button class="auth-submit" id="authSubmit" onclick="handleAuthSubmit()">Sign In</button>
+      <div class="auth-msg" id="authMsg"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TRENDING PAGE -->
+<div id="trendingPage" style="display:none;">
+  <div class="hero">
+    <div class="hero-label">// Trending</div>
+    <h1>What's<br><em>hot.</em></h1>
+
+    <div id="trendingContent">
+      <div class="loading">Loading trending</div>
+    </div>
+  </div>
+</div>
+
+<!-- RANKINGS PAGE -->
+<div id="rankingsPage" style="display:none;">
+  <div class="hero">
+    <div class="hero-label">// Rankings</div>
+    <h1>Build your<br><em>board.</em></h1>
+
+    <!-- LIST VIEW -->
+    <div id="rankingsListView">
+      <button class="new-ranking-btn" onclick="openNewRankingModal()">
+        <span style="font-size:18px">+</span> Create New Ranking
+      </button>
+
+      <div class="section-label">
+        <span id="rankingsLabel">YOUR RANKINGS</span>
+        <span id="rankingsCount">—</span>
+      </div>
+
+      <div id="rankingsGrid" class="rankings-grid"></div>
+    </div>
+
+    <!-- DETAIL VIEW -->
+    <div id="rankingDetailView" class="ranking-detail">
+      <button class="ranking-back" onclick="backToRankingsList()">← Back to Rankings</button>
+      <div id="rankingDetailContent"></div>
+    </div>
+  </div>
+</div>
+
+<!-- NEW RANKING MODAL -->
+<div class="modal-overlay" id="newRankingOverlay" style="z-index:600;">
+  <div class="new-ranking-modal">
+    <button class="modal-close" onclick="closeNewRankingModal()" style="position:absolute;top:16px;right:16px;">✕</button>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:32px;letter-spacing:2px;margin-bottom:24px;">New Ranking</div>
+    <div class="auth-field">
+      <label>Ranking Name</label>
+      <input type="text" id="newRankingName" class="form-input" placeholder="e.g. 2026 Big Board, All Time Blazers" />
+    </div>
+    <div style="margin-top:4px;margin-bottom:20px;">
+      <div style="font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;margin-bottom:8px;">Visibility</div>
+      <div style="font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px;">
+        <span style="color:var(--accent);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;">PUBLIC</span>
+        — visible to everyone by default
+      </div>
+    </div>
+    <button class="submit-btn" onclick="createRanking()">Create Ranking →</button>
+    <div id="newRankingMsg" style="margin-top:12px;font-size:13px;color:#ff5555;min-height:20px;"></div>
+  </div>
+</div>
+
+<!-- ADD PLAYER TO RANKING MODAL -->
+<div class="modal-overlay" id="addPlayerOverlay" style="z-index:600;">
+  <div class="add-player-modal">
+    <button class="modal-close" onclick="closeAddPlayerModal()" style="position:absolute;top:16px;right:16px;">✕</button>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:2px;margin-bottom:20px;">Add Player</div>
+
+    <div class="modal-section-title">Search Player</div>
+    <input class="add-player-search" id="addPlayerSearch" type="text" placeholder="Search by name..." autocomplete="off" />
+    <div class="add-player-results" id="addPlayerResults"></div>
+
+    <div id="addPlayerVersionWrap" style="display:none;">
+      <div class="modal-section-title">Version</div>
+      <input class="form-input" id="addPlayerVersion" type="text" placeholder="e.g. 2025-26, Career, Prime" style="margin-bottom:16px;" />
+
+      <div class="modal-section-title" id="addNoteLabel">Ranking Note</div>
+      <div id="existingReviewsWrap" style="margin-bottom:12px;"></div>
+      <textarea class="add-note-field" id="addPlayerNote" placeholder="Write a note specific to this ranking, or leave blank..."></textarea>
+
+      <button class="submit-btn" onclick="confirmAddPlayer()">Add to Ranking →</button>
+    </div>
+  </div>
+</div>
+
+<!-- MY REVIEWS PAGE -->
+<div id="myReviewsPage" style="display:none;">
+  <div class="hero">
+    <div class="hero-label">// My Reviews</div>
+    <h1>Your<br><em>takes.</em></h1>
+
+    <div class="filters" id="reviewFilters">
+      <button class="pill active-all" data-rfilter="all">All</button>
+      <button class="pill" data-rfilter="prospect">Prospects</button>
+      <button class="pill" data-rfilter="nba">NBA Players</button>
+    </div>
+
+    <div style="margin-bottom:24px;">
+      <input class="search-input" id="versionFilterInput" type="text"
+        placeholder="Filter by version e.g. 2025-26, Career..."
+        autocomplete="off"
+        style="font-size:15px;padding:14px 20px;" />
+    </div>
+
+    <div class="section-label">
+      <span id="reviewsLabel">ALL TAKES</span>
+      <span id="reviewsCount">—</span>
+    </div>
+
+    <div id="reviewsFeed"></div>
+  </div>
+</div>
+
+<!-- PLAYER MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal" id="modal">
+    <div class="modal-header" id="modalHeader"></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast">Review saved</div>
+
+<script>
+  // ── CONFIG — replace with your credentials ──
+  const SUPABASE_URL = 'https://dmzbqdionuxlrmgqkgcy.supabase.co';
+  const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRtemJxZGlvbnV4bHJtZ3FrZ2N5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAwMDg4MjgsImV4cCI6MjA5NTU4NDgyOH0.qiiBjtLdHiAEam0OzupXl6q8ava9J92KEnmVVzkxIck';
+
+  const { createClient } = supabase;
+  const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+  let allPlayers = [];
+  let currentFilter = 'all';
+  let selectedPlayer = null;
+  let currentUser = null;
+  let authMode = 'signin';
+
+  // ── AUTH STATE ──
+  sb.auth.onAuthStateChange((event, session) => {
+    currentUser = session?.user || null;
+    updateAuthUI();
+  });
+
+  let currentUsername = null;
+
+  function updateAuthUI() {
+    const btn = document.getElementById('authBtn');
+    if (currentUser) {
+      btn.classList.add('signed-in');
+      // Fetch username for display
+      sb.from('profiles').select('username').eq('id', currentUser.id).single().then(({ data }) => {
+        currentUsername = data?.username || currentUser.email.split('@')[0];
+        btn.textContent = ('@' + currentUsername).toUpperCase();
+      });
+    } else {
+      currentUsername = null;
+      btn.textContent = 'Sign In';
+      btn.classList.remove('signed-in');
+    }
+  }
+
+  function handleAuthBtn() {
+    if (currentUser) {
+      if (confirm('Sign out?')) sb.auth.signOut();
+    } else {
+      openAuth();
+    }
+  }
+
+  function openAuth() {
+    document.getElementById('authOverlay').classList.add('open');
+    document.getElementById('authMsg').textContent = '';
+  }
+
+  function closeAuth() {
+    document.getElementById('authOverlay').classList.remove('open');
+  }
+
+  function switchAuthTab(mode) {
+    authMode = mode;
+    document.querySelectorAll('.auth-tab').forEach((t, i) => {
+      t.classList.toggle('active', (mode === 'signin' && i === 0) || (mode === 'signup' && i === 1));
+    });
+    document.getElementById('authSubmit').textContent = mode === 'signin' ? 'Sign In' : 'Create Account';
+    document.getElementById('authMsg').textContent = '';
+    document.getElementById('usernameField').style.display = mode === 'signup' ? 'flex' : 'none';
+  }
+
+  async function handleAuthSubmit() {
+    const email = document.getElementById('authEmail').value.trim();
+    const password = document.getElementById('authPassword').value;
+    const username = document.getElementById('authUsername').value.trim().toLowerCase().replace(/[^a-z0-9_]/g, '');
+    const btn = document.getElementById('authSubmit');
+    const msg = document.getElementById('authMsg');
+
+    if (!email || !password) { msg.textContent = 'Please fill in both fields.'; msg.className = 'auth-msg error'; return; }
+    if (authMode === 'signup' && !username) { msg.textContent = 'Choose a username.'; msg.className = 'auth-msg error'; return; }
+    if (authMode === 'signup' && username.length < 3) { msg.textContent = 'Username must be at least 3 characters.'; msg.className = 'auth-msg error'; return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Please wait...';
+    msg.textContent = '';
+
+    try {
+      let result;
+      if (authMode === 'signin') {
+        result = await sb.auth.signInWithPassword({ email, password });
+        if (!result.error) { closeAuth(); }
+      } else {
+        // Check username availability first
+        const { data: existing } = await sb.from('profiles').select('username').eq('username', username).single();
+        if (existing) {
+          msg.textContent = 'That username is taken.';
+          msg.className = 'auth-msg error';
+          btn.disabled = false;
+          btn.textContent = 'Create Account';
+          return;
+        }
+
+        result = await sb.auth.signUp({ email, password });
+        if (!result.error && result.data?.user) {
+          // Create profile with username
+          await sb.from('profiles').insert({ id: result.data.user.id, username });
+          closeAuth();
+        }
+      }
+
+      if (result.error) {
+        msg.textContent = result.error.message;
+        msg.className = 'auth-msg error';
+      }
+    } catch (e) {
+      msg.textContent = 'Something went wrong.';
+      msg.className = 'auth-msg error';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = authMode === 'signin' ? 'Sign In' : 'Create Account';
+    }
+  }
+
+  document.getElementById('authOverlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('authOverlay')) closeAuth();
+  });
+
+  // ── FETCH PLAYERS ──
+  async function fetchPlayers() {
+    const grid = document.getElementById('playerGrid');
+    grid.innerHTML = '<div class="loading">Loading players</div>';
+    const { data, error } = await sb.from('players').select('*').order('name');
+    if (error || !data) { grid.innerHTML = '<div class="loading">Failed to load — check credentials</div>'; return; }
+    allPlayers = data;
+    renderGrid(allPlayers);
+    document.getElementById('playerCount').textContent = `${allPlayers.length} PLAYERS`;
+  }
+
+  // ── RENDER GRID ──
+  function renderGrid(players) {
+    const grid = document.getElementById('playerGrid');
+    if (!players.length) {
+      grid.innerHTML = '<div class="empty-state"><span class="big">NO RESULTS</span>Try a different search or filter</div>';
+      return;
+    }
+    grid.innerHTML = players.map(p => `
+      <div class="player-card ${p.player_type === 'nba' ? 'nba-card' : ''}" onclick="openPlayer('${p.id}')">
+        <div class="card-type ${p.player_type}">${p.player_type === 'nba' ? 'NBA' : 'PROSPECT'}</div>
+        <div class="card-name">${p.name}</div>
+        <div class="card-team">${p.team}</div>
+        <div class="card-arrow">↗</div>
+      </div>
+    `).join('');
+    document.getElementById('playerCount').textContent = `${players.length} PLAYERS`;
+  }
+
+  // ── SEARCH ──
+  const searchInput = document.getElementById('searchInput');
+  const dropdown = document.getElementById('dropdown');
+
+  searchInput.addEventListener('input', () => {
+    const q = searchInput.value.toLowerCase().trim();
+    if (!q) { dropdown.classList.remove('open'); filterPlayers(); return; }
+
+    const matches = allPlayers.filter(p =>
+      p.name.toLowerCase().includes(q) || p.team.toLowerCase().includes(q)
+    ).slice(0, 8);
+
+    dropdown.innerHTML = matches.length
+      ? matches.map(p => `
+          <div class="dropdown-item" onclick="selectFromDropdown('${p.id}')">
+            <span class="player-name">${highlight(p.name, q)}</span>
+            <span class="player-meta">
+              <span class="team">${p.team}</span>
+              <span class="type-badge ${p.player_type}">${p.player_type === 'nba' ? 'NBA' : 'PROSPECT'}</span>
+            </span>
+          </div>`).join('')
+      : '<div class="dropdown-item" style="color:var(--muted)">No players found</div>';
+
+    dropdown.classList.add('open');
+    const filtered = allPlayers.filter(p =>
+      (currentFilter === 'all' || p.player_type === currentFilter) &&
+      (p.name.toLowerCase().includes(q) || p.team.toLowerCase().includes(q))
+    );
+    renderGrid(filtered);
+  });
+
+  function highlight(text, q) {
+    const i = text.toLowerCase().indexOf(q);
+    if (i === -1) return text;
+    return text.slice(0, i) + `<strong style="color:var(--accent)">${text.slice(i, i + q.length)}</strong>` + text.slice(i + q.length);
+  }
+
+  function selectFromDropdown(id) {
+    dropdown.classList.remove('open');
+    searchInput.value = '';
+    filterPlayers();
+    openPlayer(id);
+  }
+
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.search-wrap')) dropdown.classList.remove('open');
+  });
+
+  // ── FILTER ──
+  document.querySelectorAll('.pill').forEach(btn => {
+    btn.addEventListener('click', () => {
+      currentFilter = btn.dataset.filter;
+      document.querySelectorAll('.pill').forEach(b => b.className = 'pill');
+      btn.className = `pill active-${currentFilter}`;
+      document.getElementById('gridLabel').textContent =
+        currentFilter === 'all' ? 'ALL PLAYERS' : currentFilter === 'prospect' ? 'PROSPECTS' : 'NBA PLAYERS';
+      filterPlayers();
+    });
+  });
+
+  function filterPlayers() {
+    const q = searchInput.value.toLowerCase().trim();
+    renderGrid(allPlayers.filter(p =>
+      (currentFilter === 'all' || p.player_type === currentFilter) &&
+      (!q || p.name.toLowerCase().includes(q) || p.team.toLowerCase().includes(q))
+    ));
+  }
+
+  // ── OPEN PLAYER MODAL ──
+  async function openPlayer(id) {
+    selectedPlayer = allPlayers.find(p => p.id === id);
+    if (!selectedPlayer) return;
+
+    const isNBA = selectedPlayer.player_type === 'nba';
+    const header = document.getElementById('modalHeader');
+    const body = document.getElementById('modalBody');
+
+    header.innerHTML = `
+      <div class="modal-type ${selectedPlayer.player_type}">${isNBA ? 'NBA PLAYER' : 'DRAFT PROSPECT'}</div>
+      <div class="modal-name">${selectedPlayer.name}</div>
+      <div class="modal-team">${selectedPlayer.team}</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    `;
+
+    // Build review form section
+    const reviewFormHTML = currentUser ? `
+      <div class="review-form" id="reviewForm">
+        <div>
+          <div class="modal-section-title">Version</div>
+          <input class="form-input" id="versionInput" type="text"
+            placeholder="${isNBA ? 'e.g. 2025-26, Career, Prime, Rookie Year' : 'e.g. 2025-26, Pre-Draft'}" />
+        </div>
+
+        <div>
+          <div class="modal-section-title">Your Rating <span style="color:var(--muted);font-size:10px;letter-spacing:1px">/ 10</span></div>
+          <div class="rating-input-wrap">
+            <input class="rating-number-input" id="ratingInput" type="number" min="0" max="10" step="0.1" placeholder="—" />
+            <div class="rating-hint">One decimal allowed<br>e.g. 7.5, 9.2</div>
+          </div>
+        </div>
+
+        ${!isNBA ? `
+        <div>
+          <div class="modal-section-title">Draft Comp</div>
+          <input class="form-input" id="compInput" type="text" placeholder="e.g. Draymond Green lite, Young Shaq" />
+        </div>` : ''}
+
+        <div>
+          <div class="modal-section-title">Your Take</div>
+          <textarea class="form-textarea" id="reviewText" placeholder="Write your scouting notes, impressions, analysis..."></textarea>
+        </div>
+
+        <button class="submit-btn" onclick="submitReview()">Log Take →</button>
+      </div>
+    ` : `
+      <div class="login-prompt">
+        <p>Sign in to log your takes and track this player over time.</p>
+        <button class="login-prompt-btn" onclick="closeModal(); openAuth();">Sign In →</button>
+      </div>
+    `;
+
+    body.innerHTML = `
+      <div style="display:flex;flex-direction:column;gap:32px;">
+        <div>
+          <div class="modal-section-title">Log a Take</div>
+          ${reviewFormHTML}
+        </div>
+        <div id="takesHistorySection"></div>
+      </div>
+    `;
+
+    document.getElementById('modalOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+
+    // Load previous takes
+    loadPreviousTakes(id);
+  }
+
+  async function loadPreviousTakes(playerId) {
+    if (!currentUser) return;
+    const section = document.getElementById('takesHistorySection');
+    if (!section) return;
+
+    section.innerHTML = '<div style="font-family:\'DM Mono\',monospace;font-size:11px;letter-spacing:2px;color:var(--muted)">LOADING TAKES...</div>';
+
+    const { data, error } = await sb
+      .from('reviews')
+      .select('*')
+      .eq('player_id', playerId)
+      .eq('user_id', currentUser.id)
+      .order('created_at', { ascending: false });
+
+    if (!data || data.length === 0) {
+      section.innerHTML = '';
+      return;
+    }
+
+    section.innerHTML = `
+      <div>
+        <div class="modal-section-title">Your Previous Takes <span style="color:var(--accent)">(${data.length})</span></div>
+        <div class="takes-history">
+          ${data.map(t => `
+            <div class="take-entry">
+              <div class="take-entry-meta">
+                <span class="take-date">${formatDate(t.created_at)}</span>
+                ${t.version ? `<span class="take-version">${t.version}</span>` : ''}
+                ${t.rating !== null ? `<span class="take-rating">${t.rating}/10</span>` : ''}
+              </div>
+              ${t.draft_comp ? `<div class="take-comp">Comp: ${t.draft_comp}</div>` : ''}
+              <div class="take-text">${t.review}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  function formatDate(iso) {
+    const d = new Date(iso);
+    return d.toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' }) +
+      ' · ' + d.toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('modalOverlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  });
+
+  // ── SUBMIT REVIEW ──
+  async function submitReview() {
+    if (!currentUser) { openAuth(); return; }
+
+    const text = document.getElementById('reviewText')?.value.trim();
+    const version = document.getElementById('versionInput')?.value.trim();
+    const ratingRaw = document.getElementById('ratingInput')?.value;
+    const comp = document.getElementById('compInput')?.value.trim() || null;
+
+    if (!text) { alert('Add your take before logging.'); return; }
+
+    // Validate rating
+    let rating = null;
+    if (ratingRaw !== '' && ratingRaw !== undefined) {
+      rating = parseFloat(parseFloat(ratingRaw).toFixed(1));
+      if (isNaN(rating) || rating < 0 || rating > 10) {
+        alert('Rating must be between 0 and 10 (e.g. 7.5)');
+        return;
+      }
+    }
+
+    const btn = document.querySelector('.submit-btn');
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+
+    const { error } = await sb.from('reviews').insert({
+      user_id: currentUser.id,
+      player_id: selectedPlayer.id,
+      player_name: selectedPlayer.name,
+      version: version || null,
+      rating,
+      draft_comp: comp,
+      review: text
+    });
+
+    btn.disabled = false;
+    btn.textContent = 'Log Take →';
+
+    if (error) {
+      alert('Error saving: ' + error.message);
+    } else {
+      // Clear form
+      document.getElementById('reviewText').value = '';
+      document.getElementById('versionInput').value = '';
+      document.getElementById('ratingInput').value = '';
+      if (document.getElementById('compInput')) document.getElementById('compInput').value = '';
+      showToast();
+      loadPreviousTakes(selectedPlayer.id);
+    }
+  }
+
+  function showToast() {
+    const t = document.getElementById('toast');
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+
+  // ── PAGE NAVIGATION ──
+  function showPage(page) {
+    const homePage = document.querySelector('.hero');
+    const reviewsPage = document.getElementById('myReviewsPage');
+    const rankingsPage = document.getElementById('rankingsPage');
+    const trendingPage = document.getElementById('trendingPage');
+
+    document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+
+    if (page === 'home') {
+      homePage.style.display = '';
+      reviewsPage.style.display = 'none';
+      rankingsPage.style.display = 'none';
+      trendingPage.style.display = 'none';
+      document.getElementById('nav-home').classList.add('active');
+    } else if (page === 'trending') {
+      homePage.style.display = 'none';
+      reviewsPage.style.display = 'none';
+      rankingsPage.style.display = 'none';
+      trendingPage.style.display = '';
+      document.getElementById('nav-trending').classList.add('active');
+      loadTrending();
+    } else if (page === 'rankings') {
+      homePage.style.display = 'none';
+      reviewsPage.style.display = 'none';
+      trendingPage.style.display = 'none';
+      document.getElementById('rankingsPage').style.display = '';
+      document.getElementById('nav-rankings').classList.add('active');
+      loadRankings();
+    } else if (page === 'myreviews') {
+      homePage.style.display = 'none';
+      rankingsPage.style.display = 'none';
+      trendingPage.style.display = 'none';
+      reviewsPage.style.display = '';
+      document.getElementById('nav-myreviews').classList.add('active');
+      if (!currentUser) {
+        document.getElementById('reviewsFeed').innerHTML = `
+          <div class="reviews-empty">
+            <span class="big">SIGN IN</span>
+            <p>Create an account to start logging takes.</p>
+          </div>`;
+        document.getElementById('reviewsCount').textContent = '—';
+        return;
+      }
+      loadMyReviews();
+    }
+  }
+
+  // ── MY REVIEWS STATE ──
+  let allMyReviews = [];
+  let reviewTypeFilter = 'all';
+  let reviewVersionFilter = '';
+
+  async function loadMyReviews() {
+    const feed = document.getElementById('reviewsFeed');
+    feed.innerHTML = '<div class="loading">Loading your takes</div>';
+
+    const { data, error } = await sb
+      .from('reviews')
+      .select('*, players(player_type, team)')
+      .eq('user_id', currentUser.id)
+      .order('created_at', { ascending: false });
+
+    if (error || !data) {
+      feed.innerHTML = '<div class="reviews-empty"><span class="big">ERROR</span><p>Could not load reviews.</p></div>';
+      return;
+    }
+
+    allMyReviews = data;
+    renderMyReviews();
+  }
+
+  function renderMyReviews() {
+    const feed = document.getElementById('reviewsFeed');
+    let filtered = allMyReviews;
+
+    if (reviewTypeFilter !== 'all') {
+      filtered = filtered.filter(r => r.players?.player_type === reviewTypeFilter);
+    }
+
+    if (reviewVersionFilter) {
+      filtered = filtered.filter(r =>
+        r.version?.toLowerCase().includes(reviewVersionFilter.toLowerCase())
+      );
+    }
+
+    document.getElementById('reviewsCount').textContent = `${filtered.length} TAKES`;
+    document.getElementById('reviewsLabel').textContent =
+      reviewTypeFilter === 'all' ? 'ALL TAKES' :
+      reviewTypeFilter === 'prospect' ? 'PROSPECT TAKES' : 'NBA TAKES';
+
+    if (!filtered.length) {
+      feed.innerHTML = `<div class="reviews-empty"><span class="big">NO TAKES</span><p>No reviews match this filter.</p></div>`;
+      return;
+    }
+
+    feed.innerHTML = filtered.map(r => `
+      <div class="review-feed-item" onclick="openPlayerFromReview('${r.player_id}')">
+        <div>
+          <div class="review-feed-player">${r.player_name}</div>
+          <div class="review-feed-meta">
+            <span class="review-feed-team">${r.players?.team || ''}</span>
+            <span class="review-feed-type ${r.players?.player_type || ''}">${r.players?.player_type === 'nba' ? 'NBA' : 'PROSPECT'}</span>
+            ${r.version ? `<span class="review-feed-version">${r.version}</span>` : ''}
+            ${r.rating !== null && r.rating !== undefined ? `<span class="review-feed-rating">${r.rating}/10</span>` : ''}
+          </div>
+          ${r.draft_comp ? `<div class="review-feed-comp">Comp: ${r.draft_comp}</div>` : ''}
+          <div class="review-feed-text">${r.review}</div>
+        </div>
+        <div>
+          <div class="review-feed-date">${formatDate(r.created_at)}</div>
+        </div>
+      </div>
+    `).join('');
+  }
+
+  function openPlayerFromReview(playerId) {
+    showPage('home');
+    setTimeout(() => openPlayer(playerId), 100);
+  }
+
+  // Review type filter pills
+  document.addEventListener('click', e => {
+    const btn = e.target.closest('[data-rfilter]');
+    if (!btn) return;
+    reviewTypeFilter = btn.dataset.rfilter;
+    document.querySelectorAll('[data-rfilter]').forEach(b => b.className = 'pill');
+    btn.className = `pill active-${reviewTypeFilter}`;
+    renderMyReviews();
+  });
+
+  // Version filter input
+  document.addEventListener('input', e => {
+    if (e.target.id === 'versionFilterInput') {
+      reviewVersionFilter = e.target.value;
+      renderMyReviews();
+    }
+  });
+
+
+
+  // ── TRENDING ──
+  async function loadTrending() {
+    const container = document.getElementById('trendingContent');
+    container.innerHTML = '<div class="loading">Loading trending</div>';
+
+    // Fetch all public reviews with profile/player info
+    const { data: reviews, error } = await sb
+      .from('reviews')
+      .select('*, players(name, team, player_type), profiles(username)')
+      .order('created_at', { ascending: false })
+      .limit(200);
+
+    if (error || !reviews) {
+      container.innerHTML = '<div class="reviews-empty"><span class="big">ERROR</span><p>Could not load trending.</p></div>';
+      return;
+    }
+
+    // Section 1: Most Reviewed Players
+    const countMap = {};
+    reviews.forEach(r => {
+      const key = r.player_id;
+      if (!countMap[key]) countMap[key] = { player_id: r.player_id, name: r.player_name, team: r.players?.team, type: r.players?.player_type, count: 0, avgRating: [] };
+      countMap[key].count++;
+      if (r.rating) countMap[key].avgRating.push(r.rating);
+    });
+
+    const mostReviewed = Object.values(countMap)
+      .sort((a, b) => b.count - a.count)
+      .slice(0, 10);
+
+    // Section 2: Highest Rated (min 1 review)
+    const ratedPlayers = Object.values(countMap)
+      .filter(p => p.avgRating.length > 0)
+      .map(p => ({ ...p, avg: p.avgRating.reduce((a,b) => a+b, 0) / p.avgRating.length }))
+      .sort((a, b) => b.avg - a.avg)
+      .slice(0, 10);
+
+    // Section 3: Latest Takes (most recent 15)
+    const latestTakes = reviews.slice(0, 15);
+
+    container.innerHTML = `
+      <div class="trending-section">
+        <div class="trending-section-title">Most Reviewed</div>
+        <div class="trending-section-sub">Players generating the most takes</div>
+        ${mostReviewed.length ? mostReviewed.map((p, i) => `
+          <div class="most-reviewed-item" onclick="showPage('home'); setTimeout(() => openPlayer('${p.player_id}'), 100)">
+            <div class="most-reviewed-rank">${i + 1}</div>
+            <div class="most-reviewed-info">
+              <div class="most-reviewed-name">${p.name}</div>
+              <div class="most-reviewed-sub">
+                <span>${p.team || ''}</span>
+                <span class="type-badge ${p.type || ''}" style="font-size:9px;padding:1px 6px;">${p.type === 'nba' ? 'NBA' : 'PROSPECT'}</span>
+              </div>
+            </div>
+            <div class="most-reviewed-count">
+              ${p.count}
+              <span>takes</span>
+            </div>
+          </div>
+        `).join('') : '<div style="color:var(--muted);padding:20px 0;font-size:13px;">No takes yet.</div>'}
+      </div>
+
+      <div class="trending-section">
+        <div class="trending-section-title">Highest Rated</div>
+        <div class="trending-section-sub">Best average rating across all users</div>
+        ${ratedPlayers.length ? ratedPlayers.map((p, i) => `
+          <div class="most-reviewed-item" onclick="showPage('home'); setTimeout(() => openPlayer('${p.player_id}'), 100)">
+            <div class="most-reviewed-rank">${i + 1}</div>
+            <div class="most-reviewed-info">
+              <div class="most-reviewed-name">${p.name}</div>
+              <div class="most-reviewed-sub">
+                <span>${p.team || ''}</span>
+                <span class="type-badge ${p.type || ''}" style="font-size:9px;padding:1px 6px;">${p.type === 'nba' ? 'NBA' : 'PROSPECT'}</span>
+              </div>
+            </div>
+            <div class="most-reviewed-count">
+              ${p.avg.toFixed(1)}
+              <span>avg / 10</span>
+            </div>
+          </div>
+        `).join('') : '<div style="color:var(--muted);padding:20px 0;font-size:13px;">No rated takes yet.</div>'}
+      </div>
+
+      <div class="trending-section">
+        <div class="trending-section-title">Latest Takes</div>
+        <div class="trending-section-sub">Most recent from the community</div>
+        ${latestTakes.length ? latestTakes.map(r => `
+          <div class="trending-take" onclick="showPage('home'); setTimeout(() => openPlayer('${r.player_id}'), 100)">
+            <div class="trending-take-header">
+              <div class="trending-take-player">${r.player_name}</div>
+              <div class="trending-take-right">
+                ${r.rating !== null && r.rating !== undefined ? `<div class="trending-take-rating">${r.rating}/10</div>` : ''}
+                <div class="trending-take-date">${formatDate(r.created_at)}</div>
+              </div>
+            </div>
+            <div class="trending-take-meta">
+              <span class="trending-username">@${r.profiles?.username || 'anonymous'}</span>
+              <span class="type-badge ${r.players?.player_type || ''}" style="font-size:9px;padding:1px 6px;">${r.players?.player_type === 'nba' ? 'NBA' : 'PROSPECT'}</span>
+              ${r.version ? `<span class="review-feed-version">${r.version}</span>` : ''}
+            </div>
+            ${r.draft_comp ? `<div class="trending-comp">Comp: ${r.draft_comp}</div>` : ''}
+            <div class="trending-take-text">${r.review}</div>
+          </div>
+        `).join('') : '<div style="color:var(--muted);padding:20px 0;font-size:13px;">No takes yet.</div>'}
+      </div>
+    `;
+  }
+
+  // ── RANKINGS ──
+  let currentRankingId = null;
+  let currentRankingEntries = [];
+  let addPlayerTarget = null;
+  let dragSrcIndex = null;
+
+  function openNewRankingModal() {
+    if (!currentUser) { openAuth(); return; }
+    document.getElementById('newRankingOverlay').classList.add('open');
+    document.getElementById('newRankingName').value = '';
+    document.getElementById('newRankingMsg').textContent = '';
+  }
+
+  function closeNewRankingModal() {
+    document.getElementById('newRankingOverlay').classList.remove('open');
+  }
+
+  async function createRanking() {
+    const name = document.getElementById('newRankingName').value.trim();
+    if (!name) { document.getElementById('newRankingMsg').textContent = 'Give your ranking a name.'; return; }
+
+    const { data, error } = await sb.from('rankings').insert({
+      user_id: currentUser.id,
+      name,
+      is_public: true
+    }).select().single();
+
+    if (error) { document.getElementById('newRankingMsg').textContent = error.message; return; }
+
+    closeNewRankingModal();
+    openRanking(data.id, data.name);
+    loadRankings();
+  }
+
+  async function loadRankings() {
+    const grid = document.getElementById('rankingsGrid');
+    grid.innerHTML = '<div class="loading">Loading rankings</div>';
+
+    if (!currentUser) {
+      grid.innerHTML = '<div class="reviews-empty"><span class="big">SIGN IN</span><p>Create an account to build rankings.</p></div>';
+      return;
+    }
+
+    const { data, error } = await sb
+      .from('rankings')
+      .select('*, ranking_entries(count)')
+      .eq('user_id', currentUser.id)
+      .order('created_at', { ascending: false });
+
+    if (!data || !data.length) {
+      grid.innerHTML = '<div class="reviews-empty"><span class="big">NO RANKINGS</span><p>Create your first ranking above.</p></div>';
+      document.getElementById('rankingsCount').textContent = '0 RANKINGS';
+      return;
+    }
+
+    document.getElementById('rankingsCount').textContent = `${data.length} RANKINGS`;
+    grid.innerHTML = data.map(r => `
+      <div class="ranking-card" onclick="openRanking('${r.id}', '${r.name.replace(/'/g,"\'")}')">
+        <div class="ranking-card-title">${r.name}</div>
+        <div class="ranking-card-meta">${r.ranking_entries?.[0]?.count || 0} players · Public</div>
+        <div class="ranking-card-arrow">↗</div>
+      </div>
+    `).join('');
+  }
+
+  async function openRanking(id, name) {
+    currentRankingId = id;
+    document.getElementById('rankingsListView').style.display = 'none';
+    document.getElementById('rankingDetailView').classList.add('open');
+
+    const content = document.getElementById('rankingDetailContent');
+    content.innerHTML = `
+      <div class="ranking-detail-title">${name}</div>
+      <div class="ranking-detail-meta">Public · Drag to reorder</div>
+      <button class="ranking-add-btn" onclick="openAddPlayerModal()">+ Add Player</button>
+      <ul class="ranking-list" id="rankingList"></ul>
+    `;
+
+    await loadRankingEntries(id);
+  }
+
+  async function loadRankingEntries(rankingId) {
+    const { data, error } = await sb
+      .from('ranking_entries')
+      .select('*, players(name, team, player_type)')
+      .eq('ranking_id', rankingId)
+      .order('position', { ascending: true });
+
+    currentRankingEntries = data || [];
+    renderRankingList();
+  }
+
+  function renderRankingList() {
+    const list = document.getElementById('rankingList');
+    if (!list) return;
+
+    if (!currentRankingEntries.length) {
+      list.innerHTML = '<div class="reviews-empty" style="padding:40px 0;"><span class="big" style="font-size:40px">EMPTY</span><p>Add players to start building your board.</p></div>';
+      return;
+    }
+
+    list.innerHTML = currentRankingEntries.map((e, i) => `
+      <li class="ranking-entry"
+          draggable="true"
+          data-index="${i}"
+          ondragstart="dragStart(event,${i})"
+          ondragover="dragOver(event,${i})"
+          ondrop="dragDrop(event,${i})"
+          ondragend="dragEnd(event)">
+        <div class="ranking-pos">${i + 1}</div>
+        <div class="ranking-entry-info">
+          <div class="ranking-entry-name">${e.players?.name || e.player_name}</div>
+          <div class="ranking-entry-meta">
+            <span class="ranking-entry-team">${e.players?.team || ''}</span>
+            <span class="type-badge ${e.players?.player_type || ''}" style="font-size:9px;padding:1px 6px;">${e.players?.player_type === 'nba' ? 'NBA' : 'PROSPECT'}</span>
+            ${e.version ? `<span class="ranking-entry-version">${e.version}</span>` : ''}
+            ${e.rating !== null && e.rating !== undefined ? `<span class="ranking-entry-rating">${e.rating}/10</span>` : ''}
+          </div>
+          ${e.note ? `<div class="ranking-entry-note">${e.note}</div>` : ''}
+        </div>
+        <div class="ranking-entry-actions">
+          <button class="entry-remove-btn" onclick="removeEntry('${e.id}',${i})">✕</button>
+        </div>
+      </li>
+    `).join('');
+  }
+
+  // ── DRAG AND DROP ──
+  function dragStart(e, index) {
+    dragSrcIndex = index;
+    e.currentTarget.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+  }
+
+  function dragOver(e, index) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    document.querySelectorAll('.ranking-entry').forEach(el => el.classList.remove('drag-over'));
+    if (index !== dragSrcIndex) e.currentTarget.classList.add('drag-over');
+  }
+
+  function dragDrop(e, index) {
+    e.preventDefault();
+    if (dragSrcIndex === null || dragSrcIndex === index) return;
+    const moved = currentRankingEntries.splice(dragSrcIndex, 1)[0];
+    currentRankingEntries.splice(index, 0, moved);
+    renderRankingList();
+    savePositions();
+  }
+
+  function dragEnd(e) {
+    dragSrcIndex = null;
+    document.querySelectorAll('.ranking-entry').forEach(el => {
+      el.classList.remove('dragging');
+      el.classList.remove('drag-over');
+    });
+  }
+
+  async function savePositions() {
+    const updates = currentRankingEntries.map((e, i) =>
+      sb.from('ranking_entries').update({ position: i + 1 }).eq('id', e.id)
+    );
+    await Promise.all(updates);
+  }
+
+  async function removeEntry(entryId, index) {
+    await sb.from('ranking_entries').delete().eq('id', entryId);
+    currentRankingEntries.splice(index, 1);
+    renderRankingList();
+  }
+
+  function backToRankingsList() {
+    currentRankingId = null;
+    document.getElementById('rankingsListView').style.display = '';
+    document.getElementById('rankingDetailView').classList.remove('open');
+  }
+
+  // ── ADD PLAYER TO RANKING ──
+  function openAddPlayerModal() {
+    addPlayerTarget = null;
+    document.getElementById('addPlayerOverlay').classList.add('open');
+    document.getElementById('addPlayerSearch').value = '';
+    document.getElementById('addPlayerResults').innerHTML = '';
+    document.getElementById('addPlayerVersionWrap').style.display = 'none';
+    document.getElementById('addPlayerVersion').value = '';
+    document.getElementById('addPlayerNote').value = '';
+  }
+
+  function closeAddPlayerModal() {
+    document.getElementById('addPlayerOverlay').classList.remove('open');
+  }
+
+  document.addEventListener('input', async e => {
+    if (e.target.id !== 'addPlayerSearch') return;
+    const q = e.target.value.toLowerCase().trim();
+    const results = document.getElementById('addPlayerResults');
+    if (!q) { results.innerHTML = ''; return; }
+
+    const matches = allPlayers.filter(p =>
+      p.name.toLowerCase().includes(q) || p.team.toLowerCase().includes(q)
+    ).slice(0, 8);
+
+    results.innerHTML = matches.map(p => `
+      <div class="add-player-result" onclick="selectPlayerForRanking('${p.id}','${p.name.replace(/'/g,"\'")}','${p.team}','${p.player_type}')">
+        <span class="add-player-result-name">${p.name}</span>
+        <span class="add-player-result-team">${p.team}</span>
+      </div>
+    `).join('');
+  });
+
+  async function selectPlayerForRanking(id, name, team, type) {
+    addPlayerTarget = { id, name, team, type };
+    document.querySelectorAll('.add-player-result').forEach(el => el.classList.remove('selected-for-add'));
+    event.currentTarget.classList.add('selected-for-add');
+    document.getElementById('addPlayerVersionWrap').style.display = 'block';
+
+    // Load existing reviews for this player
+    const existingWrap = document.getElementById('existingReviewsWrap');
+    existingWrap.innerHTML = '';
+
+    if (currentUser) {
+      const { data } = await sb
+        .from('reviews')
+        .select('*')
+        .eq('player_id', id)
+        .eq('user_id', currentUser.id)
+        .order('created_at', { ascending: false });
+
+      if (data && data.length) {
+        existingWrap.innerHTML = `
+          <div style="margin-bottom:8px;">
+            <div class="modal-section-title" style="margin-bottom:8px;">Use Existing Review?</div>
+            ${data.map((r,i) => `
+              <div class="review-use-option" onclick="selectReviewOption(this, '${r.id}', '${(r.version||'').replace(/'/g,"\'")}', ${r.rating}, '${(r.review||'').replace(/'/g,"\'").replace(/\n/g,' ')}')">
+                <input type="radio" name="reviewOption" value="${r.id}" />
+                <div class="review-use-label">
+                  <strong>${r.version || 'No version'} ${r.rating ? '· ' + r.rating + '/10' : ''}</strong>
+                  ${r.review.substring(0,80)}${r.review.length > 80 ? '...' : ''}
+                </div>
+              </div>
+            `).join('')}
+            <div class="review-use-option" onclick="selectReviewOption(this, null, null, null, null)">
+              <input type="radio" name="reviewOption" value="none" />
+              <div class="review-use-label"><strong>Write New Note</strong>Write a ranking-specific opinion</div>
+            </div>
+          </div>
+        `;
+      }
+    }
+  }
+
+  let selectedReviewForRanking = null;
+
+  function selectReviewOption(el, reviewId, version, rating, reviewText) {
+    document.querySelectorAll('.review-use-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+    el.querySelector('input[type="radio"]').checked = true;
+
+    if (reviewId) {
+      selectedReviewForRanking = { reviewId, version, rating, reviewText };
+      if (version) document.getElementById('addPlayerVersion').value = version;
+      document.getElementById('addPlayerNote').placeholder = 'Add a ranking-specific note, or leave blank to use your review...';
+    } else {
+      selectedReviewForRanking = null;
+      document.getElementById('addPlayerNote').placeholder = 'Write a note specific to this ranking...';
+    }
+  }
+
+  async function confirmAddPlayer() {
+    if (!addPlayerTarget) { alert('Select a player first.'); return; }
+
+    const version = document.getElementById('addPlayerVersion').value.trim();
+    const note = document.getElementById('addPlayerNote').value.trim();
+    const position = currentRankingEntries.length + 1;
+
+    let rating = null;
+    let finalNote = note;
+
+    if (selectedReviewForRanking) {
+      rating = selectedReviewForRanking.rating;
+      if (!note && selectedReviewForRanking.reviewText) finalNote = selectedReviewForRanking.reviewText;
+    }
+
+    const { error } = await sb.from('ranking_entries').insert({
+      ranking_id: currentRankingId,
+      player_id: addPlayerTarget.id,
+      player_name: addPlayerTarget.name,
+      version: version || null,
+      note: finalNote || null,
+      rating,
+      position
+    });
+
+    if (error) { alert('Error: ' + error.message); return; }
+
+    closeAddPlayerModal();
+    await loadRankingEntries(currentRankingId);
+    showToast();
+  }
+
+  // ── INIT ──
+  fetchPlayers();
+</script>
+</body>
+</html>
