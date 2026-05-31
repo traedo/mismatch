@@ -1368,347 +1368,6 @@
     margin-top: 8px;
   }
 
-
-  /* ── SOCIAL FEED ── */
-  .feed-tabs {
-    display: flex;
-    gap: 0;
-    margin-bottom: 32px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .feed-tab {
-    background: none;
-    border: none;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 12px 24px 12px 0;
-    cursor: pointer;
-    transition: color 0.15s;
-    border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
-  }
-
-  .feed-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
-
-  .feed-card {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    padding: 20px 24px;
-  }
-
-  .feed-card:first-child { border-top: 1px solid var(--border); }
-
-  .feed-card-header {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 10px;
-  }
-
-  .feed-card-left { flex: 1; min-width: 0; }
-
-  .feed-card-player {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px;
-    letter-spacing: 1px;
-    line-height: 1;
-    margin-bottom: 4px;
-    cursor: pointer;
-    transition: color 0.15s;
-  }
-
-  .feed-card-player:hover { color: var(--accent); }
-
-  .feed-card-meta {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 8px;
-  }
-
-  .feed-card-username {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 1px;
-    color: var(--accent);
-  }
-
-  .feed-card-date {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted2);
-    letter-spacing: 1px;
-  }
-
-  .feed-card-right {
-    text-align: right;
-    flex-shrink: 0;
-  }
-
-  .feed-card-rating {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    color: var(--accent);
-    letter-spacing: 1px;
-    line-height: 1;
-  }
-
-  .feed-card-text {
-    font-size: 13px;
-    color: var(--muted);
-    line-height: 1.6;
-    font-weight: 300;
-    margin-bottom: 12px;
-  }
-
-  .feed-card-comp {
-    font-size: 12px;
-    color: var(--nba);
-    font-style: italic;
-    margin-bottom: 6px;
-  }
-
-  /* RANKING CARD IN FEED */
-  .feed-ranking-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    letter-spacing: 1px;
-    line-height: 1;
-    margin-bottom: 4px;
-    cursor: pointer;
-    transition: color 0.15s;
-  }
-
-  .feed-ranking-title:hover { color: var(--accent); }
-
-  .feed-ranking-preview {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    margin-bottom: 12px;
-    overflow: hidden;
-  }
-
-  .feed-ranking-preview-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .feed-ranking-preview-item:last-child { border-bottom: none; }
-
-  .feed-ranking-pos {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 20px;
-    color: var(--muted2);
-    width: 24px;
-    flex-shrink: 0;
-    text-align: center;
-  }
-
-  .feed-ranking-player-name {
-    font-size: 14px;
-    font-weight: 400;
-    flex: 1;
-  }
-
-  .feed-ranking-player-version {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    letter-spacing: 1px;
-  }
-
-  .feed-ranking-more {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: var(--muted);
-    text-transform: uppercase;
-    padding: 8px 16px;
-    text-align: center;
-    border-top: 1px solid var(--border);
-    cursor: pointer;
-    transition: color 0.15s;
-  }
-
-  .feed-ranking-more:hover { color: var(--accent); }
-
-  /* SOCIAL ACTIONS */
-  .feed-actions {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding-top: 12px;
-    border-top: 1px solid var(--border);
-    margin-top: 4px;
-  }
-
-  .like-btn {
-    background: none;
-    border: none;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 1px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 0;
-    transition: color 0.15s;
-  }
-
-  .like-btn:hover { color: #ff6b9d; }
-  .like-btn.liked { color: #ff6b9d; }
-  .like-btn .heart { font-size: 15px; transition: transform 0.15s; }
-  .like-btn:hover .heart, .like-btn.liked .heart { transform: scale(1.2); }
-
-  .comment-toggle-btn {
-    background: none;
-    border: none;
-    color: var(--muted);
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 1px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 0;
-    transition: color 0.15s;
-  }
-
-  .comment-toggle-btn:hover { color: var(--accent); }
-
-  /* COMMENTS */
-  .comments-section {
-    display: none;
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
-  }
-
-  .comments-section.open { display: block; }
-
-  .comment-input-wrap {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 16px;
-  }
-
-  .comment-input {
-    flex: 1;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    padding: 10px 14px;
-    outline: none;
-    transition: border-color 0.2s;
-    resize: none;
-    min-height: 40px;
-    line-height: 1.5;
-  }
-
-  .comment-input::placeholder { color: var(--muted2); }
-  .comment-input:focus { border-color: var(--accent); }
-
-  .comment-post-btn {
-    background: var(--accent);
-    border: none;
-    color: var(--bg);
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 1.5px;
-    padding: 0 16px;
-    cursor: pointer;
-    transition: opacity 0.15s;
-    white-space: nowrap;
-    align-self: flex-start;
-    height: 40px;
-  }
-
-  .comment-post-btn:hover { opacity: 0.85; }
-
-  .comment-entry {
-    margin-bottom: 12px;
-    padding-left: 0;
-  }
-
-  .comment-entry.reply {
-    margin-left: 32px;
-    padding-left: 12px;
-    border-left: 2px solid var(--border);
-  }
-
-  .comment-header {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 4px;
-  }
-
-  .comment-username {
-    font-family: 'DM Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 1px;
-    color: var(--accent);
-  }
-
-  .comment-date {
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    color: var(--muted2);
-    letter-spacing: 1px;
-  }
-
-  .comment-text {
-    font-size: 13px;
-    color: var(--text);
-    line-height: 1.5;
-    font-weight: 300;
-    margin-bottom: 6px;
-  }
-
-  .comment-actions {
-    display: flex;
-    gap: 12px;
-  }
-
-  .comment-reply-btn, .comment-delete-btn {
-    background: none;
-    border: none;
-    font-family: 'DM Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    cursor: pointer;
-    padding: 0;
-    transition: color 0.15s;
-  }
-
-  .comment-reply-btn { color: var(--muted); }
-  .comment-reply-btn:hover { color: var(--accent); }
-  .comment-delete-btn { color: var(--muted2); }
-  .comment-delete-btn:hover { color: #ff5555; }
-
-  .reply-input-wrap {
-    margin-top: 8px;
-    display: none;
-    gap: 8px;
-  }
-
-  .reply-input-wrap.open { display: flex; }
-
 </style>
 </head>
 <body>
@@ -1719,13 +1378,12 @@
     <a class="active" onclick="showPage('home')" id="nav-home">Review</a>
     <a onclick="showPage('myreviews')" id="nav-myreviews">My Reviews</a>
     <a onclick="showPage('rankings')" id="nav-rankings">Rankings</a>
-    <a onclick="showPage('trending')" id="nav-trending">Latest Takes</a>
+    <a onclick="showPage('trending')" id="nav-trending">Trending</a>
   </nav>
   <button class="auth-btn" id="authBtn" onclick="handleAuthBtn()">Sign In</button>
 </header>
 
-<div id="homePage">
-<div class="hero">
+<div class="hero" id="homeHero">
   <div class="hero-label">// NBA · Draft Prospects · Rankings</div>
   <h1>See what<br><em>others</em><br>miss.</h1>
 
@@ -1782,13 +1440,11 @@
   </div>
 </div>
 
-</div><!-- end homePage -->
-
 <!-- TRENDING PAGE -->
 <div id="trendingPage" style="display:none;">
   <div class="hero">
-    <div class="hero-label">// Latest Takes</div>
-    <h1>Fresh<br><em>takes.</em></h1>
+    <div class="hero-label">// Trending</div>
+    <h1>What's<br><em>hot.</em></h1>
 
     <div id="trendingContent">
       <div class="loading">Loading trending</div>
@@ -2312,7 +1968,7 @@
 
   // ── PAGE NAVIGATION ──
   function showPage(page) {
-    const homePage = document.getElementById('homePage');
+    const homePage = document.getElementById('homeHero');
     const reviewsPage = document.getElementById('myReviewsPage');
     const rankingsPage = document.getElementById('rankingsPage');
     const trendingPage = document.getElementById('trendingPage');
@@ -2452,32 +2108,11 @@
 
 
 
-  // ── LATEST TAKES + RANKINGS FEED ──
-  let activeFeedTab = 'takes';
-
+  // ── TRENDING ──
+  // ── LATEST TAKES ──
   async function loadTrending() {
     const container = document.getElementById('trendingContent');
-    container.innerHTML = `
-      <div class="feed-tabs">
-        <button class="feed-tab active" onclick="switchFeedTab('takes', this)">Latest Takes</button>
-        <button class="feed-tab" onclick="switchFeedTab('rankings', this)">Latest Rankings</button>
-      </div>
-      <div id="feedTabContent"><div class="loading">Loading</div></div>
-    `;
-    loadFeedTakes();
-  }
-
-  function switchFeedTab(tab, btn) {
-    activeFeedTab = tab;
-    document.querySelectorAll('.feed-tab').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    if (tab === 'takes') loadFeedTakes();
-    else loadFeedRankings();
-  }
-
-  async function loadFeedTakes() {
-    const container = document.getElementById('feedTabContent');
-    container.innerHTML = '<div class="loading">Loading takes</div>';
+    container.innerHTML = '<div class="loading">Loading latest takes</div>';
 
     const { data: reviews, error } = await sb
       .from('reviews')
@@ -2486,256 +2121,37 @@
       .limit(50);
 
     if (error || !reviews || !reviews.length) {
-      container.innerHTML = '<div class="reviews-empty"><span class="big">NO TAKES YET</span><p>Be the first to log a take.</p></div>';
+      container.innerHTML = '<div class="reviews-empty"><span class="big">NO TAKES YET</span><p style=\"font-size:14px;color:var(--muted)\">Be the first to log a take.</p></div>';
       return;
     }
 
-    // Fetch like counts and user likes
-    const reviewIds = reviews.map(r => r.id);
-    const { data: likesData } = await sb.from('likes').select('review_id, user_id').in('review_id', reviewIds);
-    const likesMap = {};
-    reviewIds.forEach(id => likesMap[id] = { count: 0, liked: false });
-    (likesData || []).forEach(l => {
-      if (likesMap[l.review_id]) {
-        likesMap[l.review_id].count++;
-        if (currentUser && l.user_id === currentUser.id) likesMap[l.review_id].liked = true;
-      }
-    });
-
-    container.innerHTML = reviews.map(r => `
-      <div class="feed-card" id="take-${r.id}">
-        <div class="feed-card-header">
-          <div class="feed-card-left">
-            <div class="feed-card-player" onclick="showPage('home'); setTimeout(() => openPlayer('${r.player_id}'), 100)">${r.player_name}</div>
-            <div class="feed-card-meta">
-              <span class="feed-card-username">@${r.profiles?.username || 'anonymous'}</span>
-              <span class="type-badge ${r.players?.player_type || ''}" style="font-size:9px;padding:1px 6px;">${r.players?.player_type === 'nba' ? 'NBA' : 'PROSPECT'}</span>
-              ${r.version ? `<span class="review-feed-version">${r.version}</span>` : ''}
-              <span class="feed-card-date">${formatDate(r.created_at)}</span>
+    container.innerHTML = `
+      <div class="section-label" style="margin-bottom:20px;">
+        <span>MOST RECENT</span>
+        <span style="color:var(--accent)">${reviews.length} TAKES</span>
+      </div>
+      ${reviews.map(r => `
+        <div class="trending-take" onclick="showPage('home'); setTimeout(() => openPlayer('${r.player_id}'), 100)" style="cursor:pointer;">
+          <div class="trending-take-header">
+            <div class="trending-take-player">${r.player_name}</div>
+            <div class="trending-take-right">
+              ${r.rating !== null && r.rating !== undefined ? `<div class="trending-take-rating">${r.rating}/10</div>` : ''}
+              <div class="trending-take-date">${formatDate(r.created_at)}</div>
             </div>
           </div>
-          ${r.rating !== null && r.rating !== undefined ? `<div class="feed-card-right"><div class="feed-card-rating">${r.rating}/10</div></div>` : ''}
-        </div>
-        ${r.draft_comp ? `<div class="feed-card-comp">Comp: ${r.draft_comp}</div>` : ''}
-        <div class="feed-card-text">${r.review}</div>
-        <div class="feed-actions">
-          <button class="like-btn ${likesMap[r.id].liked ? 'liked' : ''}" onclick="toggleLike('review', '${r.id}', this)">
-            <span class="heart">${likesMap[r.id].liked ? '♥' : '♡'}</span>
-            <span class="like-count">${likesMap[r.id].count}</span>
-          </button>
-          <button class="comment-toggle-btn" onclick="toggleComments('take-${r.id}', 'review', '${r.id}', this)">
-            💬 <span class="comment-count-label">Comments</span>
-          </button>
-        </div>
-        <div class="comments-section" id="comments-take-${r.id}"></div>
-      </div>
-    `).join('');
-  }
-
-  async function loadFeedRankings() {
-    const container = document.getElementById('feedTabContent');
-    container.innerHTML = '<div class="loading">Loading rankings</div>';
-
-    const { data: rankings, error } = await sb
-      .from('rankings')
-      .select('*, profiles(username), ranking_entries(id, player_name, version, position)')
-      .eq('is_public', true)
-      .order('created_at', { ascending: false })
-      .limit(30);
-
-    if (error || !rankings || !rankings.length) {
-      container.innerHTML = '<div class="reviews-empty"><span class="big">NO RANKINGS YET</span><p>Be the first to build a ranking.</p></div>';
-      return;
-    }
-
-    // Fetch likes
-    const rankingIds = rankings.map(r => r.id);
-    const { data: likesData } = await sb.from('likes').select('ranking_id, user_id').in('ranking_id', rankingIds);
-    const likesMap = {};
-    rankingIds.forEach(id => likesMap[id] = { count: 0, liked: false });
-    (likesData || []).forEach(l => {
-      if (l.ranking_id && likesMap[l.ranking_id]) {
-        likesMap[l.ranking_id].count++;
-        if (currentUser && l.user_id === currentUser.id) likesMap[l.ranking_id].liked = true;
-      }
-    });
-
-    container.innerHTML = rankings.map(r => {
-      const entries = (r.ranking_entries || []).sort((a,b) => a.position - b.position);
-      const top3 = entries.slice(0, 3);
-      const remaining = entries.length - 3;
-      return `
-        <div class="feed-card" id="ranking-${r.id}">
-          <div class="feed-card-header">
-            <div class="feed-card-left">
-              <div class="feed-ranking-title" onclick="showPage('rankings'); setTimeout(() => openRanking('${r.id}', '${r.name.replace(/'/g,"\'")}'), 100)">${r.name}</div>
-              <div class="feed-card-meta">
-                <span class="feed-card-username">@${r.profiles?.username || 'anonymous'}</span>
-                <span class="feed-card-date">${formatDate(r.created_at)}</span>
-                <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;">${entries.length} players</span>
-              </div>
-            </div>
+          <div class="trending-take-meta">
+            <span class="trending-username">@${r.profiles?.username || 'anonymous'}</span>
+            <span class="type-badge ${r.players?.player_type || ''}" style="font-size:9px;padding:1px 6px;">${r.players?.player_type === 'nba' ? 'NBA' : 'PROSPECT'}</span>
+            ${r.version ? `<span class="review-feed-version">${r.version}</span>` : ''}
           </div>
-          ${top3.length ? `
-            <div class="feed-ranking-preview">
-              ${top3.map((e, i) => `
-                <div class="feed-ranking-preview-item">
-                  <div class="feed-ranking-pos">${i + 1}</div>
-                  <div class="feed-ranking-player-name">${e.player_name}</div>
-                  ${e.version ? `<div class="feed-ranking-player-version">${e.version}</div>` : ''}
-                </div>
-              `).join('')}
-              ${remaining > 0 ? `<div class="feed-ranking-more" onclick="showPage('rankings'); setTimeout(() => openRanking('${r.id}', '${r.name.replace(/'/g,"\'")}'), 100)">+ ${remaining} more players →</div>` : ''}
-            </div>
-          ` : ''}
-          <div class="feed-actions">
-            <button class="like-btn ${likesMap[r.id].liked ? 'liked' : ''}" onclick="toggleLike('ranking', '${r.id}', this)">
-              <span class="heart">${likesMap[r.id].liked ? '♥' : '♡'}</span>
-              <span class="like-count">${likesMap[r.id].count}</span>
-            </button>
-            <button class="comment-toggle-btn" onclick="toggleComments('ranking-${r.id}', 'ranking', '${r.id}', this)">
-              💬 <span class="comment-count-label">Comments</span>
-            </button>
-          </div>
-          <div class="comments-section" id="comments-ranking-${r.id}"></div>
+          ${r.draft_comp ? `<div class="trending-comp">Comp: ${r.draft_comp}</div>` : ''}
+          <div class="trending-take-text">${r.review}</div>
         </div>
-      `;
-    }).join('');
-  }
-
-  // ── LIKES ──
-  async function toggleLike(type, id, btn) {
-    if (!currentUser) { openAuth(); return; }
-    const isLiked = btn.classList.contains('liked');
-    const heart = btn.querySelector('.heart');
-    const countEl = btn.querySelector('.like-count');
-    const field = type === 'review' ? 'review_id' : 'ranking_id';
-
-    if (isLiked) {
-      await sb.from('likes').delete().eq('user_id', currentUser.id).eq(field, id);
-      btn.classList.remove('liked');
-      heart.textContent = '♡';
-      countEl.textContent = parseInt(countEl.textContent) - 1;
-    } else {
-      await sb.from('likes').insert({ user_id: currentUser.id, [field]: id });
-      btn.classList.add('liked');
-      heart.textContent = '♥';
-      countEl.textContent = parseInt(countEl.textContent) + 1;
-    }
-  }
-
-  // ── COMMENTS ──
-  async function toggleComments(cardId, type, id, btn) {
-    const section = document.getElementById('comments-' + cardId);
-    if (section.classList.contains('open')) {
-      section.classList.remove('open');
-      return;
-    }
-    section.classList.add('open');
-    await loadComments(section, type, id);
-  }
-
-  async function loadComments(section, type, id) {
-    section.innerHTML = '<div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:2px;padding:8px 0;">LOADING...</div>';
-    const field = type === 'review' ? 'review_id' : 'ranking_id';
-
-    const { data: comments } = await sb
-      .from('comments')
-      .select('*, profiles(username)')
-      .eq(field, id)
-      .is('parent_id', null)
-      .order('created_at', { ascending: true });
-
-    const { data: replies } = await sb
-      .from('comments')
-      .select('*, profiles(username)')
-      .eq(field, id)
-      .not('parent_id', 'is', null)
-      .order('created_at', { ascending: true });
-
-    const replyMap = {};
-    (replies || []).forEach(r => {
-      if (!replyMap[r.parent_id]) replyMap[r.parent_id] = [];
-      replyMap[r.parent_id].push(r);
-    });
-
-    const renderComment = (c, isReply) => `
-      <div class="comment-entry ${isReply ? 'reply' : ''}" id="comment-${c.id}">
-        <div class="comment-header">
-          <span class="comment-username">@${c.profiles?.username || 'anonymous'}</span>
-          <span class="comment-date">${formatDate(c.created_at)}</span>
-        </div>
-        <div class="comment-text">${c.content}</div>
-        <div class="comment-actions">
-          ${!isReply ? `<button class="comment-reply-btn" onclick="toggleReplyInput('${c.id}', '${type}', '${id}')">Reply</button>` : ''}
-          ${currentUser && c.user_id === currentUser.id ? `<button class="comment-delete-btn" onclick="deleteComment('${c.id}', '${type}', '${id}', this)">Delete</button>` : ''}
-        </div>
-        ${!isReply ? `
-          <div class="reply-input-wrap" id="reply-wrap-${c.id}">
-            <textarea class="comment-input" id="reply-input-${c.id}" placeholder="Write a reply..." rows="1"></textarea>
-            <button class="comment-post-btn" onclick="postComment('${type}', '${id}', '${c.id}')">Post</button>
-          </div>
-          <div id="replies-${c.id}">
-            ${(replyMap[c.id] || []).map(r => renderComment(r, true)).join('')}
-          </div>
-        ` : ''}
-      </div>
-    `;
-
-    section.innerHTML = `
-      <div class="comment-input-wrap">
-        <textarea class="comment-input" id="new-comment-${id}" placeholder="${currentUser ? 'Add a comment...' : 'Sign in to comment'}" ${!currentUser ? 'disabled' : ''} rows="1"></textarea>
-        ${currentUser ? `<button class="comment-post-btn" onclick="postComment('${type}', '${id}', null)">Post</button>` : ''}
-      </div>
-      <div id="comment-list-${id}">
-        ${(comments || []).map(c => renderComment(c, false)).join('')}
-        ${!comments?.length ? '<div style="font-size:13px;color:var(--muted2);padding:4px 0;">No comments yet.</div>' : ''}
-      </div>
+      `).join('')}
     `;
   }
 
-  function toggleReplyInput(commentId, type, id) {
-    const wrap = document.getElementById('reply-wrap-' + commentId);
-    wrap.classList.toggle('open');
-    if (wrap.classList.contains('open')) {
-      document.getElementById('reply-input-' + commentId)?.focus();
-    }
-  }
-
-  async function postComment(type, id, parentId) {
-    if (!currentUser) { openAuth(); return; }
-    const inputId = parentId ? 'reply-input-' + parentId : 'new-comment-' + id;
-    const input = document.getElementById(inputId);
-    const content = input?.value.trim();
-    if (!content) return;
-
-    const field = type === 'review' ? 'review_id' : 'ranking_id';
-    const { error } = await sb.from('comments').insert({
-      user_id: currentUser.id,
-      [field]: id,
-      parent_id: parentId || null,
-      content
-    });
-
-    if (error) { alert('Error posting: ' + error.message); return; }
-    input.value = '';
-
-    // Reload comments section
-    const cardId = (type === 'review' ? 'take-' : 'ranking-') + id;
-    const section = document.getElementById('comments-' + cardId);
-    if (section) await loadComments(section, type, id);
-  }
-
-  async function deleteComment(commentId, type, id, btn) {
-    if (!confirm('Delete this comment?')) return;
-    await sb.from('comments').delete().eq('id', commentId);
-    const cardId = (type === 'review' ? 'take-' : 'ranking-') + id;
-    const section = document.getElementById('comments-' + cardId);
-    if (section) await loadComments(section, type, id);
-  }
-
-
-  // ── RANKINGS ──
+    // ── RANKINGS ──
   let currentRankingId = null;
   let currentRankingEntries = [];
   let addPlayerTarget = null;
