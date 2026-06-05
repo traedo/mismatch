@@ -1759,7 +1759,6 @@
 
   document.addEventListener('click', e => {
     if (!e.target.closest('.search-wrap')) dropdown.classList.remove('open');
-    if (e.target === document.getElementById('takeOverlay')) closeTakeOverlay();
   });
 
   // ── FILTER ──
@@ -2143,7 +2142,7 @@
           <span style="color:var(--accent)">${reviews.length} TAKES</span>
         </div>
         ${reviews.map(r => `
-          <div class="trending-take" onclick="openTakeDetail('${r.player_id}','${r.player_name.replace(/'/g,\"\\'\")}','${(r.version||'').replace(/'/g,\"\\'\")}',${r.rating},'${(r.draft_comp||'').replace(/'/g,\"\\'\")}','${r.review.replace(/'/g,\"\\'\")}','${usernameMap[r.user_id]||'anonymous'}','${r.created_at}')" style="cursor:pointer;">
+          <div class="trending-take" onclick="openPlayer('${r.player_id}')" style="cursor:pointer;">
             <div class="trending-take-header">
               <div class="trending-take-player">${r.player_name}</div>
               <div class="trending-take-right">
@@ -2494,42 +2493,8 @@
     showToast('Take deleted');
   }
 
-
-  // ── TAKE DETAIL ──
-  function openTakeDetail(playerId, playerName, version, rating, comp, review, username, createdAt) {
-    document.getElementById('takeDetailContent').innerHTML = `
-      <div style="border-bottom:1px solid var(--border);padding-bottom:20px;margin-bottom:20px;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;margin-bottom:8px;cursor:pointer;color:var(--text);" onclick="closeTakeOverlay();openPlayer('${playerId}')">${playerName} <span style="font-size:16px;color:var(--muted);">↗ view player</span></div>
-        <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-          <span style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent);">@${username}</span>
-          ${version ? `<span class="review-feed-version">${version}</span>` : ''}
-          ${rating != null ? `<span style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--accent);">${rating}/10</span>` : ''}
-          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);">${formatDate(createdAt)}</span>
-        </div>
-      </div>
-      ${comp ? `<div style="font-size:13px;color:var(--nba);font-style:italic;margin-bottom:16px;">Comp: ${comp}</div>` : ''}
-      <div style="font-size:15px;line-height:1.8;font-weight:300;color:var(--text);white-space:pre-wrap;">${review}</div>
-    `;
-    const overlay = document.getElementById('takeOverlay');
-    overlay.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeTakeOverlay() {
-    document.getElementById('takeOverlay').style.display = 'none';
-    document.body.style.overflow = '';
-  }
-
   // ── INIT ──
   fetchPlayers();
 </script>
-
-<div id="takeOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:700;align-items:center;justify-content:center;padding:20px;">
-  <div style="background:var(--bg);border:1px solid var(--border);width:100%;max-width:620px;max-height:85vh;overflow-y:auto;position:relative;animation:modalIn 0.2s ease;">
-    <button onclick="closeTakeOverlay()" style="position:absolute;top:16px;right:16px;background:none;border:1px solid var(--border);color:var(--muted);width:32px;height:32px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;">✕</button>
-    <div id="takeDetailContent" style="padding:32px;"></div>
-  </div>
-</div>
-
 </body>
 </html>
