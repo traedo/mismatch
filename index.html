@@ -2117,11 +2117,19 @@
     try {
       const { data: reviews, error: fetchError } = await sb
         .from('reviews')
-        .select('*, players(name, team, player_type), profiles(username)')
+        .select('*, players(name, team, player_type)')
         .order('created_at', { ascending: false })
         .limit(50);
 
       if (fetchError) throw fetchError;
+
+      // Fetch usernames separately
+      const userIds = [...new Set((reviews || []).map(r => r.user_id).filter(Boolean))];
+      const usernameMap = {};
+      if (userIds.length) {
+        const { data: profiles } = await sb.from('profiles').select('id, username').in('id', userIds);
+        (profiles || []).forEach(p => usernameMap[p.id] = p.username);
+      }
 
       if (!reviews || !reviews.length) {
         container.innerHTML = '<div class="reviews-empty"><span class="big">NO TAKES YET</span><p style="font-size:14px;color:var(--muted);margin-top:8px;">Be the first to log a take.</p></div>';
@@ -2143,7 +2151,7 @@
               </div>
             </div>
             <div class="trending-take-meta">
-              <span class="trending-username">@${r.profiles ? r.profiles.username : 'anonymous'}</span>
+              <span class="trending-username">@${usernameMap[r.user_id] || 'anonymous'}</span>
               <span class="type-badge ${r.players ? r.players.player_type : ''}" style="font-size:9px;padding:1px 6px;">${r.players && r.players.player_type === 'nba' ? 'NBA' : 'PROSPECT'}</span>
               ${r.version ? `<span class="review-feed-version">${r.version}</span>` : ''}
             </div>
