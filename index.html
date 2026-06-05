@@ -1370,62 +1370,61 @@
   }
 
 
-  /* ── SOCIAL FEED ── */
-  .feed-tabs { display:flex; gap:0; margin-bottom:32px; border-bottom:1px solid var(--border); }
-  .feed-tab { background:none; border:none; color:var(--muted); font-family:'DM Mono',monospace; font-size:11px; letter-spacing:2px; text-transform:uppercase; padding:12px 24px 12px 0; cursor:pointer; transition:color 0.15s; border-bottom:2px solid transparent; margin-bottom:-1px; }
-  .feed-tab.active { color:var(--accent); border-bottom-color:var(--accent); }
-
-  .feed-card { background:var(--surface); border-bottom:1px solid var(--border); padding:20px 24px; cursor:pointer; transition:background 0.15s; }
-  .feed-card:first-child { border-top:1px solid var(--border); }
-  .feed-card:hover { background:var(--surface2); }
-
-  .feed-player-name { font-family:'Fraunces',serif; font-size:20px; letter-spacing:0.5px; line-height:1.1; margin-bottom:4px; }
-  .feed-meta { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
-  .feed-username { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:1px; color:var(--prospect); }
-  .feed-date { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted2); letter-spacing:1px; }
-  .feed-rating { font-family:'Fraunces',serif; font-size:22px; color:var(--accent); font-weight:600; }
-  .feed-text { font-size:13px; color:var(--muted); line-height:1.7; font-weight:300; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; margin-bottom:12px; }
-  .feed-comp { font-size:12px; color:var(--nba); font-style:italic; margin-bottom:6px; }
-
-  .feed-ranking-title { font-family:'Fraunces',serif; font-size:20px; letter-spacing:0.5px; line-height:1.1; margin-bottom:4px; }
-  .feed-ranking-preview { background:var(--bg); border:1px solid var(--border); margin-bottom:12px; }
-  .feed-ranking-row { display:flex; align-items:center; gap:12px; padding:10px 16px; border-bottom:1px solid var(--border); }
-  .feed-ranking-row:last-child { border-bottom:none; }
-  .feed-ranking-num { font-family:'Fraunces',serif; font-size:18px; color:var(--muted2); width:24px; flex-shrink:0; }
-  .feed-ranking-pname { font-size:14px; flex:1; }
-  .feed-ranking-ver { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:1px; }
-  .feed-ranking-more { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:2px; color:var(--muted); text-transform:uppercase; padding:8px 16px; text-align:center; border-top:1px solid var(--border); }
-
-  .feed-actions { display:flex; align-items:center; gap:16px; padding-top:12px; border-top:1px solid var(--border); }
-  .like-btn { background:none; border:none; color:var(--muted); font-family:'DM Mono',monospace; font-size:11px; letter-spacing:1px; cursor:pointer; display:flex; align-items:center; gap:6px; padding:4px 0; transition:color 0.15s; }
-  .like-btn:hover, .like-btn.liked { color:#b85c38; }
-  .like-btn .heart { font-size:15px; transition:transform 0.15s; }
-  .like-btn.liked .heart { transform:scale(1.15); }
-  .comment-toggle-btn { background:none; border:none; color:var(--muted); font-family:'DM Mono',monospace; font-size:11px; letter-spacing:1px; cursor:pointer; display:flex; align-items:center; gap:6px; padding:4px 0; transition:color 0.15s; }
-  .comment-toggle-btn:hover { color:var(--accent); }
-
-  .comments-section { display:none; margin-top:16px; padding-top:16px; border-top:1px solid var(--border); }
-  .comments-section.open { display:block; }
-  .comment-input-wrap { display:flex; gap:10px; margin-bottom:16px; }
-  .comment-input { flex:1; background:var(--surface2); border:1px solid var(--border); color:var(--text); font-family:'DM Sans',sans-serif; font-size:13px; padding:10px 14px; outline:none; transition:border-color 0.2s; resize:none; min-height:40px; line-height:1.5; }
-  .comment-input::placeholder { color:var(--muted2); }
-  .comment-input:focus { border-color:var(--accent); }
-  .comment-post-btn { background:var(--accent); border:none; color:var(--bg); font-family:'DM Mono',monospace; font-size:11px; letter-spacing:1.5px; padding:0 16px; cursor:pointer; white-space:nowrap; align-self:flex-start; height:40px; transition:opacity 0.15s; }
-  .comment-post-btn:hover { opacity:0.85; }
-  .comment-entry { margin-bottom:12px; }
-  .comment-entry.reply { margin-left:28px; padding-left:12px; border-left:2px solid var(--border); }
-  .comment-header { display:flex; align-items:center; gap:10px; margin-bottom:4px; }
-  .comment-username { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:1px; color:var(--prospect); }
-  .comment-date { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted2); }
-  .comment-text { font-size:13px; color:var(--text); line-height:1.5; font-weight:300; margin-bottom:4px; }
-  .comment-actions { display:flex; gap:12px; }
-  .comment-reply-btn, .comment-delete-btn { background:none; border:none; font-family:'DM Mono',monospace; font-size:10px; letter-spacing:1px; text-transform:uppercase; cursor:pointer; padding:0; transition:color 0.15s; }
-  .comment-reply-btn { color:var(--muted); }
-  .comment-reply-btn:hover { color:var(--accent); }
-  .comment-delete-btn { color:var(--muted2); }
-  .comment-delete-btn:hover { color:#c0392b; }
-  .reply-input-wrap { margin-top:8px; display:none; gap:8px; }
-  .reply-input-wrap.open { display:flex; }
+  .feed-tabs{display:flex;gap:0;margin-bottom:32px;border-bottom:1px solid var(--border);}
+  .feed-tab{background:none;border:none;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:2px;text-transform:uppercase;padding:12px 24px 12px 0;cursor:pointer;transition:color 0.15s;border-bottom:2px solid transparent;margin-bottom:-1px;}
+  .feed-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .feed-card{background:var(--surface);border-bottom:1px solid var(--border);padding:20px 24px;}
+  .feed-card:first-child{border-top:1px solid var(--border);}
+  .feed-card:hover{background:var(--surface2);}
+  .feed-player-name{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;line-height:1.1;margin-bottom:4px;cursor:pointer;}
+  .feed-player-name:hover{color:var(--accent);}
+  .feed-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+  .feed-username{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent);}
+  .feed-date{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);letter-spacing:1px;}
+  .feed-rating{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);letter-spacing:1px;}
+  .feed-text{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:12px;cursor:pointer;}
+  .feed-comp{font-size:12px;color:var(--nba);font-style:italic;margin-bottom:6px;}
+  .feed-ranking-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:1px;line-height:1.1;margin-bottom:4px;cursor:pointer;}
+  .feed-ranking-title:hover{color:var(--accent);}
+  .feed-ranking-preview{background:var(--bg);border:1px solid var(--border);margin-bottom:12px;}
+  .feed-ranking-row{display:flex;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--border);}
+  .feed-ranking-row:last-child{border-bottom:none;}
+  .feed-ranking-num{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--muted2);width:24px;flex-shrink:0;}
+  .feed-ranking-pname{font-size:14px;flex:1;}
+  .feed-ranking-ver{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;}
+  .feed-ranking-more{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;padding:8px 16px;text-align:center;border-top:1px solid var(--border);}
+  .feed-actions{display:flex;align-items:center;gap:16px;padding-top:12px;border-top:1px solid var(--border);}
+  .like-btn{background:none;border:none;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;gap:6px;padding:4px 0;transition:color 0.15s;}
+  .like-btn:hover,.like-btn.liked{color:#ff6b9d;}
+  .like-btn .heart{font-size:15px;transition:transform 0.15s;}
+  .like-btn.liked .heart{transform:scale(1.15);}
+  .comment-toggle-btn{background:none;border:none;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;display:flex;align-items:center;gap:6px;padding:4px 0;transition:color 0.15s;}
+  .comment-toggle-btn:hover{color:var(--accent);}
+  .comments-section{display:none;margin-top:16px;padding-top:16px;border-top:1px solid var(--border);}
+  .comments-section.open{display:block;}
+  .comment-input-wrap{display:flex;gap:10px;margin-bottom:16px;}
+  .comment-input{flex:1;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;padding:10px 14px;outline:none;transition:border-color 0.2s;resize:none;min-height:40px;line-height:1.5;}
+  .comment-input::placeholder{color:var(--muted2);}
+  .comment-input:focus{border-color:var(--accent);}
+  .comment-post-btn{background:var(--accent);border:none;color:var(--bg);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1.5px;padding:0 16px;cursor:pointer;white-space:nowrap;align-self:flex-start;height:40px;transition:opacity 0.15s;}
+  .comment-post-btn:hover{opacity:0.85;}
+  .comment-entry{margin-bottom:12px;}
+  .comment-entry.reply{margin-left:28px;padding-left:12px;border-left:2px solid var(--border);}
+  .comment-header{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+  .comment-username{font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent);}
+  .comment-date{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);}
+  .comment-text{font-size:13px;color:var(--text);line-height:1.5;font-weight:300;margin-bottom:4px;}
+  .comment-actions{display:flex;gap:12px;}
+  .comment-reply-btn,.comment-delete-btn{background:none;border:none;font-family:'DM Mono',monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;cursor:pointer;padding:0;transition:color 0.15s;}
+  .comment-reply-btn{color:var(--muted);}
+  .comment-reply-btn:hover{color:var(--accent);}
+  .comment-delete-btn{color:var(--muted2);}
+  .comment-delete-btn:hover{color:#ff5555;}
+  .reply-input-wrap{margin-top:8px;display:none;gap:8px;}
+  .reply-input-wrap.open{display:flex;}
+  .take-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.75);z-index:700;align-items:center;justify-content:center;padding:20px;}
+  .take-overlay.open{display:flex;}
+  .take-detail-box{background:var(--bg);border:1px solid var(--border);width:100%;max-width:620px;max-height:85vh;overflow-y:auto;position:relative;animation:modalIn 0.2s ease;}
 
 </style>
 </head>
@@ -1508,14 +1507,6 @@
     <div id="trendingContent">
       <div class="loading">Loading trending</div>
     </div>
-  </div>
-</div>
-
-<!-- TAKE DETAIL OVERLAY -->
-<div id="takeOverlay" style="display:none;position:fixed;inset:0;background:rgba(28,26,23,0.55);z-index:700;align-items:center;justify-content:center;padding:20px;">
-  <div style="background:var(--bg);border:1px solid var(--border);width:100%;max-width:620px;max-height:85vh;overflow-y:auto;position:relative;">
-    <button onclick="closeTakeOverlay()" style="position:absolute;top:16px;right:16px;background:none;border:1px solid var(--border);color:var(--muted);width:32px;height:32px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;z-index:1;">✕</button>
-    <div id="takeDetailContent" style="padding:32px;"></div>
   </div>
 </div>
 
@@ -2180,76 +2171,53 @@
     const container = document.getElementById('trendingContent');
     container.innerHTML = `
       <div class="feed-tabs">
-        <button class="feed-tab active" id="feedTabTakes" onclick="switchFeedTab('takes',this)">Latest Takes</button>
-        <button class="feed-tab" id="feedTabRankings" onclick="switchFeedTab('rankings',this)">Latest Rankings</button>
+        <button class="feed-tab active" onclick="switchFeedTab('takes',this)">Latest Takes</button>
+        <button class="feed-tab" onclick="switchFeedTab('rankings',this)">Latest Rankings</button>
       </div>
-      <div id="feedTabContent"><div class="loading">Loading takes</div></div>
-    `;
+      <div id="feedTabContent"><div class="loading">Loading takes</div></div>`;
     loadFeedTakes();
   }
 
   function switchFeedTab(tab, btn) {
     document.querySelectorAll('.feed-tab').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    if (tab === 'takes') loadFeedTakes();
-    else loadFeedRankings();
+    tab === 'takes' ? loadFeedTakes() : loadFeedRankings();
   }
 
   async function loadFeedTakes() {
-    const container = document.getElementById('feedTabContent');
-    container.innerHTML = '<div class="loading">Loading takes</div>';
-
-    const { data: reviews, error } = await sb
-      .from('reviews')
-      .select('*, players(name, team, player_type)')
-      .order('created_at', { ascending: false })
-      .limit(50);
-
-    if (error || !reviews || !reviews.length) {
-      container.innerHTML = '<div class="reviews-empty"><span class="big">NO TAKES YET</span></div>';
-      return;
-    }
-
-    // Fetch usernames
-    const userIds = [...new Set(reviews.map(r => r.user_id).filter(Boolean))];
-    const usernameMap = {};
-    if (userIds.length) {
-      const { data: profiles } = await sb.from('profiles').select('id, username').in('id', userIds);
-      (profiles || []).forEach(p => usernameMap[p.id] = p.username);
-    }
-
-    // Fetch likes
-    const reviewIds = reviews.map(r => r.id);
-    const { data: likesData } = await sb.from('likes').select('review_id, user_id').in('review_id', reviewIds);
-    const likesMap = {};
-    reviewIds.forEach(id => likesMap[id] = { count: 0, liked: false });
-    (likesData || []).forEach(l => {
-      if (likesMap[l.review_id]) {
-        likesMap[l.review_id].count++;
-        if (currentUser && l.user_id === currentUser.id) likesMap[l.review_id].liked = true;
-      }
-    });
-
-    container.innerHTML = reviews.map(r => `
+    const c = document.getElementById('feedTabContent');
+    c.innerHTML = '<div class="loading">Loading takes</div>';
+    const { data: reviews, error } = await sb.from('reviews').select('*, players(name,team,player_type)').order('created_at',{ascending:false}).limit(50);
+    if (error || !reviews || !reviews.length) { c.innerHTML = '<div class="reviews-empty"><span class="big">NO TAKES YET</span></div>'; return; }
+    const uids = [...new Set(reviews.map(r=>r.user_id).filter(Boolean))];
+    const umap = {};
+    if (uids.length) { const {data:p} = await sb.from('profiles').select('id,username').in('id',uids); (p||[]).forEach(x=>umap[x.id]=x.username); }
+    const rids = reviews.map(r=>r.id);
+    const {data:ld} = await sb.from('likes').select('review_id,user_id').in('review_id',rids);
+    const lmap = {};
+    rids.forEach(id=>lmap[id]={count:0,liked:false});
+    (ld||[]).forEach(l=>{ if(lmap[l.review_id]){lmap[l.review_id].count++; if(currentUser&&l.user_id===currentUser.id) lmap[l.review_id].liked=true;} });
+    c.innerHTML = reviews.map(r => `
       <div class="feed-card" id="take-${r.id}">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:6px;">
-          <div class="feed-player-name" onclick="openPlayer('${r.player_id}')" style="cursor:pointer;">${r.player_name}</div>
-          ${r.rating !== null && r.rating !== undefined ? `<div class="feed-rating">${r.rating}/10</div>` : ''}
+          <div class="feed-player-name" onclick="openPlayer('${r.player_id}')">${r.player_name}</div>
+          ${r.rating!=null?`<div class="feed-rating">${r.rating}/10</div>`:''}
         </div>
         <div class="feed-meta">
-          <span class="feed-username">@${usernameMap[r.user_id] || 'anonymous'}</span>
-          <span class="type-badge ${r.players?.player_type || ''}" style="font-size:9px;padding:1px 6px;">${r.players?.player_type === 'nba' ? 'NBA' : 'PROSPECT'}</span>
-          ${r.version ? `<span class="review-feed-version">${r.version}</span>` : ''}
+          <span class="feed-username">@${umap[r.user_id]||'anonymous'}</span>
+          <span class="type-badge ${r.players?.player_type||''}" style="font-size:9px;padding:1px 6px;">${r.players?.player_type==='nba'?'NBA':'PROSPECT'}</span>
+          ${r.version?`<span class="review-feed-version">${r.version}</span>`:''}
           <span class="feed-date">${formatDate(r.created_at)}</span>
         </div>
-        ${r.draft_comp ? `<div class="feed-comp">Comp: ${r.draft_comp}</div>` : ''}
-        <div class="feed-text" onclick="openTakeDetail(${JSON.stringify(r).replace(/"/g,'&quot;')}, '${usernameMap[r.user_id] || 'anonymous'}')" style="cursor:pointer;">${r.review}</div>
+        ${r.draft_comp?`<div class="feed-comp">Comp: ${r.draft_comp}</div>`:''}
+        <div class="feed-text" onclick="openTakeDetail('${r.id}','${r.player_id}','${r.player_name.replace(/'/g,"\'")}','${(r.version||'').replace(/'/g,"\'")}',${r.rating||null},'${(r.draft_comp||'').replace(/'/g,"\'")}','${r.review.replace(/'/g,"\'").replace(/
+/g,' ')}','${umap[r.user_id]||'anonymous'}','${r.created_at}')">${r.review}</div>
         <div class="feed-actions">
-          <button class="like-btn ${likesMap[r.id].liked ? 'liked' : ''}" onclick="toggleLike('review','${r.id}',this)">
-            <span class="heart">${likesMap[r.id].liked ? '♥' : '♡'}</span>
-            <span class="like-count">${likesMap[r.id].count}</span>
+          <button class="like-btn ${lmap[r.id].liked?'liked':''}" onclick="toggleLike('review','${r.id}',this)">
+            <span class="heart">${lmap[r.id].liked?'♥':'♡'}</span>
+            <span class="like-count">${lmap[r.id].count}</span>
           </button>
-          <button class="comment-toggle-btn" onclick="toggleComments('take-${r.id}','review','${r.id}',this)">💬 Comments</button>
+          <button class="comment-toggle-btn" onclick="toggleComments('take-${r.id}','review','${r.id}')">💬 Comments</button>
           <button style="background:none;border:none;color:var(--muted);font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;cursor:pointer;padding:4px 0;" onclick="openPlayer('${r.player_id}')">View Player →</button>
         </div>
         <div class="comments-section" id="comments-take-${r.id}"></div>
@@ -2257,147 +2225,102 @@
   }
 
   async function loadFeedRankings() {
-    const container = document.getElementById('feedTabContent');
-    container.innerHTML = '<div class="loading">Loading rankings</div>';
-
-    const { data: rankings, error } = await sb
-      .from('rankings')
-      .select('*, ranking_entries(id, player_name, version, position)')
-      .eq('is_public', true)
-      .order('created_at', { ascending: false })
-      .limit(30);
-
-    if (error || !rankings || !rankings.length) {
-      container.innerHTML = '<div class="reviews-empty"><span class="big">NO RANKINGS YET</span></div>';
-      return;
-    }
-
-    // Fetch usernames
-    const userIds = [...new Set(rankings.map(r => r.user_id).filter(Boolean))];
-    const usernameMap = {};
-    if (userIds.length) {
-      const { data: profiles } = await sb.from('profiles').select('id, username').in('id', userIds);
-      (profiles || []).forEach(p => usernameMap[p.id] = p.username);
-    }
-
-    // Fetch likes
-    const rankingIds = rankings.map(r => r.id);
-    const { data: likesData } = await sb.from('likes').select('ranking_id, user_id').in('ranking_id', rankingIds);
-    const likesMap = {};
-    rankingIds.forEach(id => likesMap[id] = { count: 0, liked: false });
-    (likesData || []).forEach(l => {
-      if (l.ranking_id && likesMap[l.ranking_id]) {
-        likesMap[l.ranking_id].count++;
-        if (currentUser && l.user_id === currentUser.id) likesMap[l.ranking_id].liked = true;
-      }
-    });
-
-    container.innerHTML = rankings.map(r => {
-      const entries = (r.ranking_entries || []).sort((a,b) => a.position - b.position);
-      const top3 = entries.slice(0,3);
-      const remaining = entries.length - 3;
-      return `
-        <div class="feed-card" id="ranking-${r.id}">
-          <div class="feed-ranking-title">${r.name}</div>
-          <div class="feed-meta">
-            <span class="feed-username">@${usernameMap[r.user_id] || 'anonymous'}</span>
-            <span class="feed-date">${formatDate(r.created_at)}</span>
-            <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;">${entries.length} players</span>
-          </div>
-          ${top3.length ? `
-            <div class="feed-ranking-preview">
-              ${top3.map((e,i) => `
-                <div class="feed-ranking-row">
-                  <div class="feed-ranking-num">${i+1}</div>
-                  <div class="feed-ranking-pname">${e.player_name}</div>
-                  ${e.version ? `<div class="feed-ranking-ver">${e.version}</div>` : ''}
-                </div>`).join('')}
-              ${remaining > 0 ? `<div class="feed-ranking-more">+ ${remaining} more players</div>` : ''}
-            </div>` : ''}
-          <div class="feed-actions">
-            <button class="like-btn ${likesMap[r.id].liked ? 'liked' : ''}" onclick="toggleLike('ranking','${r.id}',this)">
-              <span class="heart">${likesMap[r.id].liked ? '♥' : '♡'}</span>
-              <span class="like-count">${likesMap[r.id].count}</span>
-            </button>
-            <button class="comment-toggle-btn" onclick="toggleComments('ranking-${r.id}','ranking','${r.id}',this)">💬 Comments</button>
-          </div>
-          <div class="comments-section" id="comments-ranking-${r.id}"></div>
-        </div>`;
+    const c = document.getElementById('feedTabContent');
+    c.innerHTML = '<div class="loading">Loading rankings</div>';
+    const {data:rankings,error} = await sb.from('rankings').select('*,ranking_entries(id,player_name,version,position)').eq('is_public',true).order('created_at',{ascending:false}).limit(30);
+    if (error||!rankings||!rankings.length) { c.innerHTML='<div class="reviews-empty"><span class="big">NO RANKINGS YET</span></div>'; return; }
+    const uids=[...new Set(rankings.map(r=>r.user_id).filter(Boolean))];
+    const umap={};
+    if(uids.length){const{data:p}=await sb.from('profiles').select('id,username').in('id',uids);(p||[]).forEach(x=>umap[x.id]=x.username);}
+    const rids=rankings.map(r=>r.id);
+    const{data:ld}=await sb.from('likes').select('ranking_id,user_id').in('ranking_id',rids);
+    const lmap={};
+    rids.forEach(id=>lmap[id]={count:0,liked:false});
+    (ld||[]).forEach(l=>{if(l.ranking_id&&lmap[l.ranking_id]){lmap[l.ranking_id].count++;if(currentUser&&l.user_id===currentUser.id)lmap[l.ranking_id].liked=true;}});
+    c.innerHTML=rankings.map(r=>{
+      const entries=(r.ranking_entries||[]).sort((a,b)=>a.position-b.position);
+      const top3=entries.slice(0,3);const rem=entries.length-3;
+      return `<div class="feed-card" id="ranking-${r.id}">
+        <div class="feed-ranking-title">${r.name}</div>
+        <div class="feed-meta">
+          <span class="feed-username">@${umap[r.user_id]||'anonymous'}</span>
+          <span class="feed-date">${formatDate(r.created_at)}</span>
+          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;">${entries.length} players</span>
+        </div>
+        ${top3.length?`<div class="feed-ranking-preview">${top3.map((e,i)=>`<div class="feed-ranking-row"><div class="feed-ranking-num">${i+1}</div><div class="feed-ranking-pname">${e.player_name}</div>${e.version?`<div class="feed-ranking-ver">${e.version}</div>`:''}</div>`).join('')}${rem>0?`<div class="feed-ranking-more">+ ${rem} more players</div>`:''}</div>`:''}
+        <div class="feed-actions">
+          <button class="like-btn ${lmap[r.id].liked?'liked':''}" onclick="toggleLike('ranking','${r.id}',this)">
+            <span class="heart">${lmap[r.id].liked?'♥':'♡'}</span>
+            <span class="like-count">${lmap[r.id].count}</span>
+          </button>
+          <button class="comment-toggle-btn" onclick="toggleComments('ranking-${r.id}','ranking','${r.id}')">💬 Comments</button>
+        </div>
+        <div class="comments-section" id="comments-ranking-${r.id}"></div>
+      </div>`;
     }).join('');
   }
 
-  // ── TAKE DETAIL ──
-  function openTakeDetail(r, username) {
-    const overlay = document.getElementById('takeOverlay');
+  function openTakeDetail(id,playerId,playerName,version,rating,comp,review,username,createdAt) {
     document.getElementById('takeDetailContent').innerHTML = `
       <div style="border-bottom:1px solid var(--border);padding-bottom:20px;margin-bottom:20px;">
-        <div style="font-family:'Fraunces',serif;font-size:28px;letter-spacing:0.5px;margin-bottom:6px;cursor:pointer;" onclick="closeTakeOverlay();openPlayer('${r.player_id}')">${r.player_name}</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:1px;margin-bottom:8px;cursor:pointer;" onclick="closeTakeOverlay();openPlayer('${playerId}')">${playerName} ↗</div>
         <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-          <span style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--prospect);">@${username}</span>
-          ${r.version ? `<span class="review-feed-version">${r.version}</span>` : ''}
-          ${r.rating !== null && r.rating !== undefined ? `<span style="font-family:'Fraunces',serif;font-size:20px;color:var(--accent);font-weight:600;">${r.rating}/10</span>` : ''}
-          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);">${formatDate(r.created_at)}</span>
+          <span style="font-family:'DM Mono',monospace;font-size:11px;letter-spacing:1px;color:var(--accent);">@${username}</span>
+          ${version?`<span class="review-feed-version">${version}</span>`:''}
+          ${rating!=null?`<span style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--accent);">${rating}/10</span>`:''}
+          <span style="font-family:'DM Mono',monospace;font-size:10px;color:var(--muted2);">${formatDate(createdAt)}</span>
         </div>
       </div>
-      ${r.draft_comp ? `<div style="font-size:13px;color:var(--nba);font-style:italic;margin-bottom:16px;">Comp: ${r.draft_comp}</div>` : ''}
-      <div style="font-size:15px;line-height:1.8;font-weight:300;color:var(--text);margin-bottom:24px;">${r.review}</div>
+      ${comp?`<div style="font-size:13px;color:var(--nba);font-style:italic;margin-bottom:16px;">Comp: ${comp}</div>`:''}
+      <div style="font-size:15px;line-height:1.8;font-weight:300;color:var(--text);white-space:pre-wrap;">${review}</div>
     `;
-    overlay.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
+    document.getElementById('takeOverlay').classList.add('open');
+    document.body.style.overflow='hidden';
   }
 
   function closeTakeOverlay() {
-    document.getElementById('takeOverlay').style.display = 'none';
-    document.body.style.overflow = '';
+    document.getElementById('takeOverlay').classList.remove('open');
+    document.body.style.overflow='';
   }
 
-  document.getElementById('takeOverlay').addEventListener('click', e => {
+  document.addEventListener('click', e => {
     if (e.target === document.getElementById('takeOverlay')) closeTakeOverlay();
   });
 
-  // ── LIKES ──
-  async function toggleLike(type, id, btn) {
-    if (!currentUser) { openAuth(); return; }
-    const isLiked = btn.classList.contains('liked');
-    const heart = btn.querySelector('.heart');
-    const countEl = btn.querySelector('.like-count');
-    const field = type === 'review' ? 'review_id' : 'ranking_id';
-    if (isLiked) {
-      await sb.from('likes').delete().eq('user_id', currentUser.id).eq(field, id);
-      btn.classList.remove('liked'); heart.textContent = '♡'; countEl.textContent = parseInt(countEl.textContent) - 1;
+  async function toggleLike(type,id,btn) {
+    if(!currentUser){openAuth();return;}
+    const isLiked=btn.classList.contains('liked');
+    const heart=btn.querySelector('.heart');
+    const countEl=btn.querySelector('.like-count');
+    const field=type==='review'?'review_id':'ranking_id';
+    if(isLiked){
+      await sb.from('likes').delete().eq('user_id',currentUser.id).eq(field,id);
+      btn.classList.remove('liked');heart.textContent='♡';countEl.textContent=parseInt(countEl.textContent)-1;
     } else {
-      await sb.from('likes').insert({ user_id: currentUser.id, [field]: id });
-      btn.classList.add('liked'); heart.textContent = '♥'; countEl.textContent = parseInt(countEl.textContent) + 1;
+      await sb.from('likes').insert({user_id:currentUser.id,[field]:id});
+      btn.classList.add('liked');heart.textContent='♥';countEl.textContent=parseInt(countEl.textContent)+1;
     }
   }
 
-  // ── COMMENTS ──
-  async function toggleComments(cardId, type, id) {
-    const section = document.getElementById('comments-' + cardId);
-    if (section.classList.contains('open')) { section.classList.remove('open'); return; }
+  async function toggleComments(cardId,type,id) {
+    const section=document.getElementById('comments-'+cardId);
+    if(section.classList.contains('open')){section.classList.remove('open');return;}
     section.classList.add('open');
-    await loadComments(section, type, id);
+    await loadComments(section,type,id);
   }
 
-  async function loadComments(section, type, id) {
-    section.innerHTML = '<div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:2px;padding:8px 0;">LOADING...</div>';
-    const field = type === 'review' ? 'review_id' : 'ranking_id';
-    const { data: comments } = await sb.from('comments').select('*').eq(field, id).is('parent_id', null).order('created_at', { ascending: true });
-    const { data: replies } = await sb.from('comments').select('*').eq(field, id).not('parent_id', 'is', null).order('created_at', { ascending: true });
-
-    // Fetch usernames for all commenters
-    const allComments = [...(comments||[]), ...(replies||[])];
-    const uids = [...new Set(allComments.map(c => c.user_id).filter(Boolean))];
-    const umap = {};
-    if (uids.length) {
-      const { data: profiles } = await sb.from('profiles').select('id, username').in('id', uids);
-      (profiles||[]).forEach(p => umap[p.id] = p.username);
-    }
-
-    const replyMap = {};
-    (replies||[]).forEach(r => { if (!replyMap[r.parent_id]) replyMap[r.parent_id]=[]; replyMap[r.parent_id].push(r); });
-
-    const renderComment = (c, isReply) => `
+  async function loadComments(section,type,id) {
+    section.innerHTML='<div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);letter-spacing:2px;padding:8px 0;">LOADING...</div>';
+    const field=type==='review'?'review_id':'ranking_id';
+    const{data:comments}=await sb.from('comments').select('*').eq(field,id).is('parent_id',null).order('created_at',{ascending:true});
+    const{data:replies}=await sb.from('comments').select('*').eq(field,id).not('parent_id','is',null).order('created_at',{ascending:true});
+    const allC=[...(comments||[]),...(replies||[])];
+    const uids=[...new Set(allC.map(c=>c.user_id).filter(Boolean))];
+    const umap={};
+    if(uids.length){const{data:p}=await sb.from('profiles').select('id,username').in('id',uids);(p||[]).forEach(x=>umap[x.id]=x.username);}
+    const replyMap={};
+    (replies||[]).forEach(r=>{if(!replyMap[r.parent_id])replyMap[r.parent_id]=[];replyMap[r.parent_id].push(r);});
+    const renderComment=(c,isReply)=>`
       <div class="comment-entry ${isReply?'reply':''}" id="comment-${c.id}">
         <div class="comment-header">
           <span class="comment-username">@${umap[c.user_id]||'anonymous'}</span>
@@ -2405,56 +2328,56 @@
         </div>
         <div class="comment-text">${c.content}</div>
         <div class="comment-actions">
-          ${!isReply ? `<button class="comment-reply-btn" onclick="toggleReplyInput('${c.id}','${type}','${id}')">Reply</button>` : ''}
-          ${currentUser && c.user_id === currentUser.id ? `<button class="comment-delete-btn" onclick="deleteComment('${c.id}','${type}','${id}')">Delete</button>` : ''}
+          ${!isReply?`<button class="comment-reply-btn" onclick="toggleReplyInput('${c.id}','${type}','${id}')">Reply</button>`:''}
+          ${currentUser&&c.user_id===currentUser.id?`<button class="comment-delete-btn" onclick="deleteComment('${c.id}','${type}','${id}')">Delete</button>`:''}
         </div>
-        ${!isReply ? `
+        ${!isReply?`
           <div class="reply-input-wrap" id="reply-wrap-${c.id}">
             <textarea class="comment-input" id="reply-input-${c.id}" placeholder="Write a reply..." rows="1"></textarea>
             <button class="comment-post-btn" onclick="postComment('${type}','${id}','${c.id}')">Post</button>
           </div>
-          <div id="replies-${c.id}">${(replyMap[c.id]||[]).map(r=>renderComment(r,true)).join('')}</div>` : ''}
+          <div id="replies-${c.id}">${(replyMap[c.id]||[]).map(r=>renderComment(r,true)).join('')}</div>`:''}
       </div>`;
-
-    section.innerHTML = `
+    section.innerHTML=`
       <div class="comment-input-wrap">
         <textarea class="comment-input" id="new-comment-${id}" placeholder="${currentUser?'Add a comment...':'Sign in to comment'}" ${!currentUser?'disabled':''} rows="1"></textarea>
-        ${currentUser ? `<button class="comment-post-btn" onclick="postComment('${type}','${id}',null)">Post</button>` : ''}
+        ${currentUser?`<button class="comment-post-btn" onclick="postComment('${type}','${id}',null)">Post</button>`:''}
       </div>
       <div id="comment-list-${id}">
         ${(comments||[]).map(c=>renderComment(c,false)).join('')}
-        ${!comments?.length ? '<div style="font-size:13px;color:var(--muted2);padding:4px 0;">No comments yet.</div>' : ''}
+        ${!comments?.length?'<div style="font-size:13px;color:var(--muted2);padding:4px 0;">No comments yet.</div>':''}
       </div>`;
   }
 
   function toggleReplyInput(commentId) {
-    const wrap = document.getElementById('reply-wrap-'+commentId);
+    const wrap=document.getElementById('reply-wrap-'+commentId);
     wrap.classList.toggle('open');
-    if (wrap.classList.contains('open')) document.getElementById('reply-input-'+commentId)?.focus();
+    if(wrap.classList.contains('open')) document.getElementById('reply-input-'+commentId)?.focus();
   }
 
-  async function postComment(type, id, parentId) {
-    if (!currentUser) { openAuth(); return; }
-    const inputId = parentId ? 'reply-input-'+parentId : 'new-comment-'+id;
-    const input = document.getElementById(inputId);
-    const content = input?.value.trim();
-    if (!content) return;
-    const field = type === 'review' ? 'review_id' : 'ranking_id';
-    const { error } = await sb.from('comments').insert({ user_id:currentUser.id, [field]:id, parent_id:parentId||null, content });
-    if (error) { alert('Error: '+error.message); return; }
-    input.value = '';
-    const cardId = (type==='review'?'take-':'ranking-')+id;
-    const section = document.getElementById('comments-'+cardId);
-    if (section) await loadComments(section, type, id);
+  async function postComment(type,id,parentId) {
+    if(!currentUser){openAuth();return;}
+    const inputId=parentId?'reply-input-'+parentId:'new-comment-'+id;
+    const input=document.getElementById(inputId);
+    const text=input?.value.trim();
+    if(!text)return;
+    const field=type==='review'?'review_id':'ranking_id';
+    const{error}=await sb.from('comments').insert({user_id:currentUser.id,[field]:id,parent_id:parentId||null,content:text});
+    if(error){alert('Error: '+error.message);return;}
+    input.value='';
+    const cardId=(type==='review'?'take-':'ranking-')+id;
+    const section=document.getElementById('comments-'+cardId);
+    if(section) await loadComments(section,type,id);
   }
 
-  async function deleteComment(commentId, type, id) {
-    if (!confirm('Delete this comment?')) return;
-    await sb.from('comments').delete().eq('id', commentId);
-    const cardId = (type==='review'?'take-':'ranking-')+id;
-    const section = document.getElementById('comments-'+cardId);
-    if (section) await loadComments(section, type, id);
+  async function deleteComment(commentId,type,id) {
+    if(!confirm('Delete this comment?'))return;
+    await sb.from('comments').delete().eq('id',commentId);
+    const cardId=(type==='review'?'take-':'ranking-')+id;
+    const section=document.getElementById('comments-'+cardId);
+    if(section) await loadComments(section,type,id);
   }
+
 
     // ── RANKINGS ──
   let currentRankingId = null;
@@ -2786,5 +2709,13 @@
   // ── INIT ──
   fetchPlayers();
 </script>
+
+<div class="take-overlay" id="takeOverlay">
+  <div class="take-detail-box">
+    <button onclick="closeTakeOverlay()" style="position:absolute;top:16px;right:16px;background:none;border:1px solid var(--border);color:var(--muted);width:32px;height:32px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;">✕</button>
+    <div id="takeDetailContent" style="padding:32px;"></div>
+  </div>
+</div>
+
 </body>
 </html>
